@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
+
 public interface IInteractable
 {
     bool isCurrentlyInteractable { get; }
