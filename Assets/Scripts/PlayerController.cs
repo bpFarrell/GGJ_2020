@@ -59,4 +59,25 @@ public class PlayerController : MonoBehaviour
         item.transform.localPosition = Vector3.zero;
         item.transform.localEulerAngles = Vector3.zero;
     }
+
+    public void DropItems(Vector3 throwV3)
+    {
+        var lastItem = heldItem;
+
+        lastItem.transform.parent = null;
+
+        var rb = GetComponent<Rigidbody>();
+
+        if (rb)
+        {
+            rb.velocity = throwV3;
+        }
+        
+        UnassignHand();
+    }
+
+    public void UnassignHand()
+    {
+        heldItem = null;
+    }
 }
