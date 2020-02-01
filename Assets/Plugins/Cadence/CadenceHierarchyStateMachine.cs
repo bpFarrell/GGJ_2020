@@ -7,7 +7,7 @@ using System.Linq;
 namespace Cadence.StateMachine {
     using Utility;
 
-    public class CadenceHierarchyStateMachine : UISingletonBehaviour<CadenceHierarchyStateMachine> {
+    public class CadenceHierarchyStateMachine : MonoBehaviour {//} UISingletonBehaviour<CadenceHierarchyStateMachine> {
         public string defaultState = "default";
         public string currentState { get; private set; }
         
@@ -54,34 +54,52 @@ namespace Cadence.StateMachine {
                 ActivateState(state);
             }
         }
-        
+
         public void ActivateState(string state) {
             if (string.IsNullOrWhiteSpace(state)) {
                 DeactivateAll();
                 return;
             }
+
             if (!activatorDict.ContainsKey(state.ToLower())) {
                 Debug.LogError($"No state found of name: {state.ToLower()}");
                 return;
             }
+
+            string majorState = "";
+            var stateSplit = state.Split('/');
+            if (stateSplit.Length > 1) {
+                majorState = stateSplit[0];
+            }
+
             Debug.Log($"Activating state: {state.ToLower()} | PreviousState: {currentState}");
-            
+
             foreach (var stateBasekvp in activatorDict) {
-                if(string.Equals(state, stateBasekvp.Key, StringComparison.CurrentCultureIgnoreCase)) continue;
+                if (string.Equals(state, stateBasekvp.Key, StringComparison.CurrentCultureIgnoreCase) ||
+                    (!string.IsNullOrEmpty(majorState) &&
+                     stateBasekvp.Key.Equals(majorState, StringComparison.CurrentCultureIgnoreCase))) {
+                    continue;
+                }
+
                 foreach (StateBase stateBase in stateBasekvp.Value) {
                     stateBase._Deactivate();
                 }
             }
+
             currentState = state.ToLower();
-            if(activatorDict.ContainsKey(state.ToLower())) {
-                foreach (StateBase stateBase in activatorDict[state.ToLower()]) {
-                    stateBase._Activate();
+            foreach (var stateBasekvp in activatorDict) {
+                if (string.Equals(state, stateBasekvp.Key, StringComparison.CurrentCultureIgnoreCase) ||
+                    (!string.IsNullOrEmpty(majorState) &&
+                     stateBasekvp.Key.Equals(majorState, StringComparison.CurrentCultureIgnoreCase))) {
+                    {
+                        foreach (StateBase stateBase in stateBasekvp.Value) {
+                            stateBase._Activate();
+                        }
+                    }
                 }
-            } else {
-                if(state != defaultState) ActivateDefault();
             }
         }
-        
+
         private void DeactivateAll() {
             foreach (StateBase stateBase in activatorDict.Values.SelectMany(stateBaseList => stateBaseList).Where(stateBase => stateBase.isActive)) {
                 stateBase._Deactivate();
