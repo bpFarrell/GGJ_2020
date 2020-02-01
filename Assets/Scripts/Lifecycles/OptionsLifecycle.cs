@@ -4,23 +4,22 @@ using UnityEngine;
 
 public class Options : LifecycleModule
 {
-    public float fontSize;
+    public static float fontSize;
+    public static float musicSize;
+    public static float effectSize;
 
-    public void Serialize() {
+    public static void Serialize() {
         
     }
     
-    public void Deserialize() {
+    public static void Deserialize() {
         
     }
     
-    protected override void OnEnable()
-    {
+    protected override void OnEnable() {
         Deserialize();
     }
 
-    protected override void OnDisable()
-    {
-        throw new System.NotImplementedException();
+    protected override void OnDisable() {
     }
 }
