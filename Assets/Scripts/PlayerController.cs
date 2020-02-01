@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public GameObject handPivot;
     Player player;
     IInteractable nearInteraction;
-    ItemBase heldItem;
+    public ItemBase heldItem;
     void Awake()
     {
         player = ReInput.players.GetPlayer(0);
@@ -18,11 +18,13 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (player.GetButtonDown("Action")) {
-            if (heldItem != null) {
+            if (nearInteraction != null&& !(nearInteraction is ItemBase)) {
+                nearInteraction.Interact(this);
+            } else if (heldItem != null) {
                 heldItem.Dropped(this);
                 heldItem.transform.parent = null;
                 heldItem = null;
-            }else if (nearInteraction != null) {
+            } else if(nearInteraction != null) {
                 nearInteraction.Interact(this);
             }
 
@@ -40,6 +42,7 @@ public class PlayerController : MonoBehaviour
         transform.position += targetDir;
     }
     private void OnTriggerEnter(Collider other) {
+        Debug.Log(other.name);
         IInteractable interact = other.GetComponent<IInteractable>();
         nearInteraction = interact;
         interact.EnterRange(this);
