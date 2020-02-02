@@ -29,7 +29,7 @@ public class ItemSeedBag : ItemBase
 
         foreach (var meshRenderer in meshRenderers)
         {
-            meshRenderer.material = newMaterial;
+            meshRenderer.material = PlantMeta.GetMaterial(plantType);
         }
     }
     
