@@ -23,12 +23,14 @@ public class ItemBase : MonoBehaviour, IInteractable
     Collider col;
     float defaultY;
 
-    private void Awake()
+    protected void Awake()
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
         Debug.Log("Awake ItemBase "+name);
         defaultY = transform.position.y;
+        ShadowLogic sl = (Instantiate(Resources.Load("Shadow") as GameObject)).GetComponent<ShadowLogic>();
+        sl.target = transform;
     }
 
     private void FixedUpdate()
@@ -48,6 +50,7 @@ public class ItemBase : MonoBehaviour, IInteractable
         if (isFlyingStart) {
             if (rb.velocity.y < 0)
             {
+                //TODO Posiblly fixed the 
                 //rb.isKinematic = false;
                 if (col != null) col.isTrigger = false;
                 //EndThrow();
@@ -118,6 +121,7 @@ public class ItemBase : MonoBehaviour, IInteractable
 
     public virtual void Dropped(PlayerController player) {
         heldBy = null;
+
     }
 
     public virtual void Thrown(Vector3 direction, float power)
@@ -185,6 +189,8 @@ public class ItemBase : MonoBehaviour, IInteractable
         {
             Debug.Log("Break fall for " + name);
             isFlyingStart = false;
+
+            transform.position = new Vector3(transform.position.x, defaultY, transform.position.z);
             if (collision.gameObject == lastHeld) return;
             if (rb != null)
             {

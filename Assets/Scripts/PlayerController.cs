@@ -32,6 +32,7 @@ public class PlayerController : ItemBase
 
     void Awake()
     {
+        base.Awake();
         Debug.Log("player awake "+name);
         player = ReInput.players.GetPlayer(claimedPlayers);
         claimedPlayers++;
@@ -40,6 +41,7 @@ public class PlayerController : ItemBase
 
         animator = GetComponent<Animator>();
         animator.SetBool("Grounded", true);
+
     }
 
     bool MaybeDoingSomething()
@@ -140,7 +142,7 @@ public class PlayerController : ItemBase
             newPos.x = -PlayAreaSettings.middleHalfWidth;
         if (transform.position.x >= PlayAreaSettings.middleHalfWidth && newPos.x < PlayAreaSettings.middleHalfWidth)
             newPos.x = PlayAreaSettings.middleHalfWidth;
-        Debug.Log("x: " + transform.position.x + "  new x: " + newPos.x + "  barrier: " + PlayAreaSettings.middleHalfWidth);
+        //Debug.Log("x: " + transform.position.x + "  new x: " + newPos.x + "  barrier: " + PlayAreaSettings.middleHalfWidth);
 
         //transform.position += targetDir * PlayAreaSettings.playerSpeed * moveSpeed;
         transform.position = newPos;
@@ -159,6 +161,7 @@ public class PlayerController : ItemBase
     void UseToolOnThing()
     {
         Debug.Log("Doing something with "+heldItem.name+" on "+nearInteraction.GetGameObject().name);
+        nearInteraction.Interact(this);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -191,7 +194,7 @@ public class PlayerController : ItemBase
         float dd;
         for (int i = 0; i<nears.Count; i++)
         {
-            if (heldItem == nears[i] as ItemBase) continue;
+            if (heldItem == nears[i] as ItemBase || nears[i]==null) continue;
             dd = (nears[i].position - transform.position).magnitude;
             if (dd < d)
             {
