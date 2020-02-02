@@ -91,7 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b05ec769b4064a64191db50a1c1df0ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stationType: 8
 --- !u!136 &1214621448782293347
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -168,6 +167,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: 2e750496a6dc5a5419c2de559d74a2ea,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a02a248ff6f43774a919b986840921e2, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 2e750496a6dc5a5419c2de559d74a2ea,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: af029fbfab6e2964aba4e587d927de04, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 2e750496a6dc5a5419c2de559d74a2ea,
+        type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: a02a248ff6f43774a919b986840921e2, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 2e750496a6dc5a5419c2de559d74a2ea,
+        type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73291651ea1f65346807970d90370d59, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 2e750496a6dc5a5419c2de559d74a2ea,
+        type: 3}
+      propertyPath: m_Materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8d99201e1a48f794885a1e77e42acb59, type: 2}
     - target: {fileID: -927199367670048503, guid: 2e750496a6dc5a5419c2de559d74a2ea,
         type: 3}
       propertyPath: m_Name

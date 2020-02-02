@@ -32,6 +32,7 @@ public class PlayerController : ItemBase
 
     void Awake()
     {
+        base.Awake();
         Debug.Log("player awake "+name);
         player = ReInput.players.GetPlayer(claimedPlayers);
         claimedPlayers++;
@@ -40,6 +41,7 @@ public class PlayerController : ItemBase
 
         animator = GetComponent<Animator>();
         animator.SetBool("Grounded", true);
+
     }
 
     bool MaybeDoingSomething()
@@ -140,7 +142,7 @@ public class PlayerController : ItemBase
             newPos.x = -PlayAreaSettings.middleHalfWidth;
         if (transform.position.x >= PlayAreaSettings.middleHalfWidth && newPos.x < PlayAreaSettings.middleHalfWidth)
             newPos.x = PlayAreaSettings.middleHalfWidth;
-        Debug.Log("x: " + transform.position.x + "  new x: " + newPos.x + "  barrier: " + PlayAreaSettings.middleHalfWidth);
+        //Debug.Log("x: " + transform.position.x + "  new x: " + newPos.x + "  barrier: " + PlayAreaSettings.middleHalfWidth);
 
         //transform.position += targetDir * PlayAreaSettings.playerSpeed * moveSpeed;
         transform.position = newPos;
@@ -158,6 +160,7 @@ public class PlayerController : ItemBase
     /// </summary>
     void UseToolOnThing()
     {
+        nearInteraction.Interact(this);
         Debug.Log("Doing something with "+heldItem.name+" on "+nearInteraction.GetGameObject().name);
     }
 

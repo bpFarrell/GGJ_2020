@@ -25,7 +25,7 @@ public class FocusCamera : MonoBehaviour
     public void Object2RT(RenderTexture rt,GameObject focus) {
         cam.targetTexture = rt;
         int mask = focus.layer;
-        focus.layer = LayerMask.NameToLayer("UI");
+        focus.layer = LayerMask.NameToLayer("UI");  
         foreach (Transform item in focus.transform.GetComponentsInChildren<Transform>()) {
             item.gameObject.layer = LayerMask.NameToLayer("UI");
         }
