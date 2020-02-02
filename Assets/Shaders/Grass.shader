@@ -7,7 +7,7 @@ Shader "Unlit/Grass"
         _MainTex ("Texture", 2D) = "white" {}
         _Lut ("Lut", 2D) = "white" {}
 		_Paper("Paper", 2D) = "white" {}
-		_Fill ("Fill", Float) = 1
+		//_Fill ("Fill", Float) = 1
     }
     SubShader
     {
@@ -66,7 +66,7 @@ Shader "Unlit/Grass"
 				fixed4 final = tex2D(_Lut,float2(col.x,0.5));
 				float4 shadow = tex2D(_MainTex, i.worldPos.xz*0.05+_Time.x*0.1);
 				float4 cutoff = tex2D(_MainTex, i.worldPos.xz*0.1+_Time.x*1);
-				float4 paper = tex2D(_Paper, i.worldPos.xz*0.5);
+				float4 paper = tex2D(_Paper, i.worldPos.xz*0.5+100);
 					
 
 
