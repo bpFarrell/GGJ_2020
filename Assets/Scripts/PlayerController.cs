@@ -10,6 +10,7 @@ public class PlayerController : ItemBase
     public static float maxLaunchSpeed = 10f;
     public static float minLaunchSpeed = 4f;
     public static float maxPowerTime = .8f;
+    public static float smallDropTime = .2f; //before this, drop straight down. else throw with minlaunchspeed and up
 
     public Mesh[] playerSkins;
 
@@ -49,7 +50,15 @@ public class PlayerController : ItemBase
     // Update is called once per frame
     void Update()
     {
-        if (heldBy != null) return;
+        if (heldBy != null)
+        {
+            if (player.GetButtonDown("Action"))
+            {
+                //get unheld
+                heldBy.ThrowHeld(smallDropTime+.01f);
+            }
+            return;
+        }
 
         if (player.GetButtonDown("Action"))
         {
@@ -81,15 +90,7 @@ public class PlayerController : ItemBase
             {
                 if (!justPickedUp && heldItem != null)
                 {
-                    Debug.Log(name + " THROW!!");
-                    //heldItem.Dropped(this);
-                    heldItem.transform.parent = null;
-                    float lspeed = Mathf.Clamp(minLaunchSpeed + (maxLaunchSpeed-minLaunchSpeed) * chargeTime / maxPowerTime,
-                                                minLaunchSpeed, maxLaunchSpeed);
-                    if (chargeTime < .2) lspeed = minLaunchSpeed / 4;
-                    heldItem.Thrown(Quaternion.AngleAxis(-launchAngleDegs, transform.right) * transform.forward,
-                        lspeed);
-                    heldItem = null;
+                    ThrowHeld(chargeTime);
                 }
             }
             justPickedUp = false;
@@ -134,7 +135,15 @@ public class PlayerController : ItemBase
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * 10);
         float faceScale = Vector3.Dot(transform.forward, dir.normalized);
         Vector3 targetDir = transform.forward * Time.deltaTime * faceScale;
-        transform.position += targetDir * PlayAreaSettings.playerSpeed * moveSpeed;
+        Vector3 newPos = transform.position + targetDir * PlayAreaSettings.playerSpeed * moveSpeed;
+        if (transform.position.x <= -PlayAreaSettings.middleHalfWidth && newPos.x > -PlayAreaSettings.middleHalfWidth)
+            newPos.x = -PlayAreaSettings.middleHalfWidth;
+        if (transform.position.x >= PlayAreaSettings.middleHalfWidth && newPos.x < PlayAreaSettings.middleHalfWidth)
+            newPos.x = PlayAreaSettings.middleHalfWidth;
+        Debug.Log("x: " + transform.position.x + "  new x: " + newPos.x + "  barrier: " + PlayAreaSettings.middleHalfWidth);
+
+        //transform.position += targetDir * PlayAreaSettings.playerSpeed * moveSpeed;
+        transform.position = newPos;
 
         //Debug.Log("movespeed: "+(targetDir.magnitude * speed));
         animator.SetFloat("MoveSpeed", moveSpeed);
@@ -145,7 +154,7 @@ public class PlayerController : ItemBase
     }
 
     /// <summary>
-    /// Assuming heldBy is the tool and nearInteraction is the thing...
+    /// Assuming heldItem is the tool and nearInteraction is the thing...
     /// </summary>
     void UseToolOnThing()
     {
@@ -201,6 +210,27 @@ public class PlayerController : ItemBase
         item.transform.parent = handPivot.transform;
         item.transform.localPosition = Vector3.zero;
         item.transform.localEulerAngles = Vector3.zero;
+    }
+
+    public void ItemTaken(ItemBase item) //ItemBase calls this
+    {
+        if (item == heldItem)
+        {
+            heldItem = null;
+        }
+    }
+
+    public void ThrowHeld(float timeCharged)
+    {
+        Debug.Log(name + " THROW!!");
+        //heldItem.Dropped(this);
+        heldItem.transform.parent = null;
+        float lspeed = Mathf.Clamp(minLaunchSpeed + (maxLaunchSpeed - minLaunchSpeed) * timeCharged / maxPowerTime,
+                                    minLaunchSpeed, maxLaunchSpeed);
+        if (timeCharged < smallDropTime) lspeed = minLaunchSpeed / 4;
+        heldItem.Thrown(Quaternion.AngleAxis(-launchAngleDegs, transform.right) * transform.forward,
+            lspeed);
+        heldItem = null;
     }
 
     public void DropItems(Vector3 throwV3)
