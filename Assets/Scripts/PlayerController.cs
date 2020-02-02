@@ -182,6 +182,7 @@ public class PlayerController : ItemBase
         float dd;
         for (int i = 0; i<nears.Count; i++)
         {
+            if (heldItem == nears[i] as ItemBase) continue;
             dd = (nears[i].position - transform.position).magnitude;
             if (dd < d)
             {
