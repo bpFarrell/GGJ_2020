@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEditor.UIElements;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -20,20 +21,32 @@ public class Crop : Station
     private CropType nextCropType; // used when water is done
 
     public bool isWatered = false;
-    public float wateringWaitTime = 10;
+    public float wateringWaitTime = 5;
 
     public MeshFilter meshFilter = null;
 
     public Mesh tilledMesh = null;
     public Mesh plainMesh = null;
-    
+
+    public int rockHealth = 5;
+    public GameObject rockPrefab = null;
+
     private GameObject plantModel = null;
+    private GameObject rockInstance;
 
     private void Start()
     {
         meshFilter.mesh = plainMesh;
+
+        if (cropType == CropType.Rocky && rockPrefab)
+        {
+            rockInstance = Instantiate(rockPrefab, position, Quaternion.identity);
+        }
+        else
+        {
+            cropType = CropType.Plain;
+        }
         
-        cropType = CropType.Plain;
         cropMaterial = new Material(GetComponentInChildren<MeshRenderer>().material);
 
         produceLookup = new Dictionary<PlantType, GameObject>
@@ -71,13 +84,28 @@ public class Crop : Station
 
         var canTill = cropType == CropType.Plain;
         var canSeed = cropType == CropType.Tilled;
-        
+        var canHammer = cropType == CropType.Rocky;
         var canWater = CanWater(cropType);
         var canHarvest = CanHarvest(cropType);
 
         var animateItem = true;
+        
+        if (canHammer)
+        {
+            rockHealth--;
 
-        if (canTill && item is ItemHoe)
+            if (rockHealth <= 0)
+            {
+                Destroy(rockInstance);
+                CropTransition(cropType, CropType.Plain);
+            }
+            else
+            {
+                rockInstance.transform.localScale *= .9f;
+                rockInstance.transform.DOShakePosition(0.5f, new Vector3(0.1f, 0.25f, 0.1f));
+            }
+        }
+        else if (canTill && item is ItemHoe)
         {
             CropTransition(cropType, CropType.Tilled);
         } 
@@ -100,6 +128,8 @@ public class Crop : Station
         else if (canHarvest && item is ItemScyth)
         {
             var produceCount = GetProduceCount(cropType);
+
+            isWatered = false;
             
             ProduceProduce(plantType, produceCount);
             CropTransition(cropType, CropType.Plain);
