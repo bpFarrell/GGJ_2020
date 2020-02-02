@@ -12,6 +12,8 @@ public class PlayAreaSettings
 
 public class ItemBase : MonoBehaviour, IInteractable
 {
+    private const float ANIMATION_DURATION = 0.5f;
+    private float nextAnimationAllowed = 0;
     public bool isHeld { get { return heldBy != null; } }
     public bool isFlyingStart = false;
     public PlayerController heldBy;
@@ -138,9 +140,28 @@ public class ItemBase : MonoBehaviour, IInteractable
         transform.position -= (col.bounds.center.y - col.bounds.size.y) * Vector3.up;
     }
 
-    public virtual void StartAnimation() {
-        transform.DOPunchPosition(-transform.forward*0.5F, 0.5f);
-        transform.DOPunchRotation(new Vector3(30, 0, 0), 0.5F);
+    public virtual void StartAnimation(ItemAnimationType animType = ItemAnimationType.Success) {
+        if (Time.time < nextAnimationAllowed)
+        {
+            return;
+        }
+        
+        switch (animType)
+        {
+            case ItemAnimationType.Success:
+                transform.DOPunchPosition(-transform.forward*0.5F, ANIMATION_DURATION);
+                transform.DOPunchRotation(new Vector3(30, 0, 0), ANIMATION_DURATION);
+                break;
+            case ItemAnimationType.Failure:
+                transform.DOShakePosition(ANIMATION_DURATION, 0.5f);
+                transform.DOShakeRotation(ANIMATION_DURATION, 0.5f);
+                break;
+            default:
+                Debug.Log($"unimplemented animation type {animType}");
+                break;
+        }
+
+        nextAnimationAllowed = Time.time + ANIMATION_DURATION;
     }
 
     public void EnterRange(PlayerController player) {

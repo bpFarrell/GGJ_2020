@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Station : MonoBehaviour, IInteractable
 {
@@ -11,16 +12,16 @@ public class Station : MonoBehaviour, IInteractable
 
     virtual public void Interact(PlayerController player)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     virtual public void EnterRange(PlayerController player)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     virtual public void LeaveRange(PlayerController player)
     {
-        throw new System.NotImplementedException();
+        
     }
 }

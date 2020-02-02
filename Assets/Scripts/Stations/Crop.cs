@@ -11,8 +11,13 @@ public class Crop : Station
     public CropType cropType { get; private set; }
     public PlantType plantType { get; private set; }
 
+    public Material cropMaterial;
+
     private void Start()
     {
+        cropType = CropType.Plain;
+        cropMaterial = GetComponentInChildren<MeshRenderer>().material;
+        
         produceLookup = new Dictionary<PlantType, GameObject>
         {
             {PlantType.Red, Resources.Load<GameObject>("crops/red")},
@@ -20,7 +25,6 @@ public class Crop : Station
             {PlantType.Yellow, Resources.Load<GameObject>("crops/yellow")}
         };
     }
-
     public override void Interact(PlayerController player)
     {
         base.Interact(player);
@@ -33,6 +37,8 @@ public class Crop : Station
         var canWater = CanWater(cropType);
         var canHarvest = CanHarvest(cropType);
 
+        var animateItem = true;
+
         if (canTill && item is ItemHoe)
         {
             CropTransition(cropType, CropType.Tilled);
@@ -40,29 +46,36 @@ public class Crop : Station
         else if (canSeed && item is ItemSeedBag bag)
         {
             plantType = bag.plantType;
+            CropTransition(cropType, CropType.Sowed);
             player.UnassignHand();
         }
         else if (canWater && item is ItemWatteringCan can && !can.isEmpty)
         {
+            CropTransition(cropType, cropType + 1);
             can.Use();
-            player.UnassignHand();
         } 
-        else if (canHarvest && item is ItemScyth scyth)
+        else if (canHarvest && item is ItemScyth)
         {
             var produceCount = GetProduceCount(cropType);
             
-            ProduceProduce(cropType, plantType, produceCount);
+            ProduceProduce(plantType, produceCount);
             CropTransition(cropType, CropType.Plain);
         }
+        else
+        {
+            animateItem = false;
+        }
+
+        item?.StartAnimation(animateItem ? ItemAnimationType.Success : ItemAnimationType.Failure);
     }
 
-    private void ProduceProduce(CropType cropType, PlantType plantType, int numProduce = 1)
+    private void ProduceProduce(PlantType plantType, int numProduce = 1)
     {
         var i = 0;
 
         for (; i < numProduce; i++)
         {
-            var unit = Random.onUnitSphere * PRODUCE_SPAWN_RADIUS;
+            var unit = transform.position + (Random.onUnitSphere * PRODUCE_SPAWN_RADIUS);
             var produceLocation = new Vector3(unit.x, 0, unit.z);
             
             Instantiate(produceLookup[plantType], produceLocation, Quaternion.identity);
@@ -70,6 +83,7 @@ public class Crop : Station
     }
 
     bool CanWater(CropType cropType) =>
+        cropType == CropType.Sowed || 
         cropType == CropType.Sprout ||
         cropType == CropType.Juvenile ||
         cropType == CropType.Mature
@@ -89,24 +103,47 @@ public class Crop : Station
         switch (cropType)
         {
             case CropType.Sprout:
-                numProduce = 1;
+                numProduce = 0;
                 break;
             case CropType.Juvenile:
-                numProduce = 2;
+                numProduce = 1;
                 break;
             case CropType.Mature:
-                numProduce = 3;
+                numProduce = 2;
                 break;
             case CropType.Overgrown:
-                numProduce = 4;
+                numProduce = 1;
                 break;
         }
 
         return numProduce;
     }
-    
-    void CropTransition(CropType from, CropType to)
+
+    private Color GetCropColor(CropType cropType)
     {
+        var color = Color.red;
+
+        switch (cropType)
+        {
+            case CropType.Plain: 
+                color = Color.green;
+                break;
+            case CropType.Tilled:
+                color = Color.yellow;
+                break;
+            case CropType.Sowed:
+                color = Color.gray;
+                break;
+            case CropType.Sprout:
+                color = Color.blue;
+                break;
+        }
+
+        return color;
+    }
+
+    void CropTransition(CropType from, CropType to) {
+        cropMaterial.color = GetCropColor(to);
         cropType = to;
     } 
 }

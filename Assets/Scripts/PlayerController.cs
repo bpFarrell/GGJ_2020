@@ -177,7 +177,6 @@ public class PlayerController : ItemBase
         item.transform.localEulerAngles = Vector3.zero;
     }
 
-
     public void DropItems(Vector3 throwV3)
     {
         var lastItem = heldItem;
