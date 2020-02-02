@@ -4,11 +4,6 @@ using Rewired;
 using UnityEngine;
 using DG.Tweening;
 
-public class PlayAreaSettings
-{
-    static public float xHalfWidth = 8;
-    static public float zHalfWidth = 4;
-}
 
 public class ItemBase : MonoBehaviour, IInteractable
 {
@@ -26,12 +21,14 @@ public class ItemBase : MonoBehaviour, IInteractable
 
     Rigidbody rb;
     Collider col;
+    float defaultY;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
         Debug.Log("Awake ItemBase "+name);
+        defaultY = transform.position.y;
     }
 
     private void FixedUpdate()
@@ -53,13 +50,14 @@ public class ItemBase : MonoBehaviour, IInteractable
             {
                 //rb.isKinematic = false;
                 if (col != null) col.isTrigger = false;
-                EndThrow();
+                //EndThrow();
             }
         }
         if (!isHeld && rb.isKinematic == false) //it is flying around randomly
         {
             //MeshRenderer mr = GetComponent<MeshRenderer>();
-            if (rb != null && rb.velocity.y < 0 && col != null && col.bounds.center.y - col.bounds.size.y < 0)
+            //if (rb != null && rb.velocity.y < 0 && col != null && col.bounds.center.y - col.bounds.size.y < 0)
+            if (rb != null && rb.velocity.y < 0 && transform.position.y < defaultY)
             //if (transform.position.y < 0)
             {
                 EndThrow();
@@ -75,19 +73,19 @@ public class ItemBase : MonoBehaviour, IInteractable
         //if (rb == null || rb.isKinematic == true) return;
 
         //should be flying, check for out of bounds
-        if (transform.position.x < -PlayAreaSettings.xHalfWidth)
+        if (transform.position.x < -PlayAreaSettings.xHalfWidth+1)
         {
-            transform.position = new Vector3(-PlayAreaSettings.xHalfWidth, transform.position.y, transform.position.z);
-            rb.isKinematic = true;
+            transform.position = new Vector3(-PlayAreaSettings.xHalfWidth+1, transform.position.y, transform.position.z);
+            //rb.isKinematic = true;
             rb.velocity = new Vector3(-rb.velocity.x, rb.velocity.y, rb.velocity.z);
-            rb.isKinematic = false;
+            //rb.isKinematic = false;
         }
         else if (transform.position.x > PlayAreaSettings.xHalfWidth)
         {
             transform.position = new Vector3(PlayAreaSettings.xHalfWidth, transform.position.y, transform.position.z);
-            rb.isKinematic = true;
+            //rb.isKinematic = true;
             rb.velocity = new Vector3(-rb.velocity.x, rb.velocity.y, rb.velocity.z);
-            rb.isKinematic = false;
+            //rb.isKinematic = false;
         }
 
         if (transform.position.z < -PlayAreaSettings.zHalfWidth)
@@ -95,7 +93,7 @@ public class ItemBase : MonoBehaviour, IInteractable
             transform.position = new Vector3(transform.position.x, transform.position.y, -PlayAreaSettings.zHalfWidth);
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, -rb.velocity.z);
         }
-        else if (transform.position.z > PlayAreaSettings.xHalfWidth)
+        else if (transform.position.z > PlayAreaSettings.zHalfWidth)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, PlayAreaSettings.zHalfWidth);
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, -rb.velocity.z);
@@ -108,6 +106,10 @@ public class ItemBase : MonoBehaviour, IInteractable
     }
 
     public virtual void PickedUp(PlayerController player) {
+        if (heldBy != null)
+        {
+            heldBy.ItemTaken(this);
+        }
         heldBy = player;
         lastHeld = player.gameObject;
         if (rb != null) rb.isKinematic = true;
@@ -137,7 +139,11 @@ public class ItemBase : MonoBehaviour, IInteractable
     {
         isFlyingStart = false;
         rb.isKinematic = true;
-        transform.position -= (col.bounds.center.y - col.bounds.size.y) * Vector3.up;
+        col.isTrigger = true;
+        //Debug.Log("End throw position1: " + (col.bounds.center.y - col.bounds.size.y));
+        //transform.position -= (col.bounds.center.y - col.bounds.size.y) * Vector3.up;
+        transform.position = new Vector3(transform.position.x, defaultY, transform.position.z);
+        //Debug.Log("End throw position2: " + (col.bounds.center.y - col.bounds.size.y));
     }
 
     public virtual void StartAnimation(ItemAnimationType animType = ItemAnimationType.Success) {
