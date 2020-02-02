@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Items
 {
-    public class ItemProduce : MonoBehaviour, IInteractable
+    public class ItemProduce : ItemBase
     {
         public PlantType plantType;
         public bool isCurrentlyInteractable { get; }
