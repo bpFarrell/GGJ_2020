@@ -21,7 +21,7 @@ public class PlayerController : ItemBase
     public ItemBase heldItem;
     //public float speed = 2;
     public float chargeTime = 0;
-    bool justPickedUp = false;
+    public bool justPickedUp = false;
     public bool isCharging; 
 
     List<IInteractable> nears;
