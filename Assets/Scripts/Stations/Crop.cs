@@ -7,32 +7,62 @@ using Random = UnityEngine.Random;
 public class Crop : Station
 {
     private const int PRODUCE_SPAWN_RADIUS = 1;
+    
     private Dictionary<PlantType, GameObject> produceLookup;
     private Dictionary<PlantType, GameObject[]> modelLookup;
-    public CropType cropType { get; private set; }
-    public PlantType plantType { get; private set; }
+    
+    public CropType cropType;
+    public PlantType plantType;
 
-    public Material cropMaterial;
+    private Material cropMaterial;
+    private Material wetMaterial;
+    private float lastWatered = float.MaxValue;
+    private CropType nextCropType; // used when water is done
 
+    public bool isWatered = false;
+    public float wateringWaitTime = 10;
+
+    public MeshFilter meshFilter = null;
+
+    public Mesh tilledMesh = null;
+    public Mesh plainMesh = null;
+    
     private GameObject plantModel = null;
 
     private void Start()
     {
+        meshFilter.mesh = plainMesh;
+        
         cropType = CropType.Plain;
         cropMaterial = new Material(GetComponentInChildren<MeshRenderer>().material);
-        
+
         produceLookup = new Dictionary<PlantType, GameObject>
         {
             {PlantType.Red, Resources.Load<GameObject>("crops/red")},
             {PlantType.Green, Resources.Load<GameObject>("crops/green")},
             {PlantType.Yellow, Resources.Load<GameObject>("crops/yellow")}
         };
+        
         modelLookup = new Dictionary<PlantType, GameObject[]> {
             {PlantType.Red, new [] {Resources.Load<GameObject>("crops/RedPlant_1"), Resources.Load<GameObject>("crops/RedPlant_2"), Resources.Load<GameObject>("crops/RedPlant_3")}},
             {PlantType.Green, new [] {Resources.Load<GameObject>("crops/GreenPlant_1"), Resources.Load<GameObject>("crops/GreenPlant_2"), Resources.Load<GameObject>("crops/GreenPlant_3")}},
             {PlantType.Yellow, new [] {Resources.Load<GameObject>("crops/YellowPlant_1"), Resources.Load<GameObject>("crops/YellowPlant_2"), Resources.Load<GameObject>("crops/YellowPlant_3")}}
         };
+
+        wetMaterial = Resources.Load<Material>("Unlit_WetDirt");
     }
+
+    private void Update()
+    {
+        if (isWatered && lastWatered + wateringWaitTime < Time.time)
+        {
+            isWatered = false;
+            
+            CropTransition(cropType, nextCropType);
+            ChangeMaterial(cropMaterial);
+        }
+    }
+
     public override void Interact(PlayerController player)
     {
         base.Interact(player);
@@ -60,7 +90,11 @@ public class Crop : Station
         }
         else if (canWater && item is ItemWatteringCan can && !can.isEmpty)
         {
-            CropTransition(cropType, cropType + 1);
+            isWatered = true;
+            lastWatered = Time.time;
+            ChangeMaterial(wetMaterial);
+
+            nextCropType = cropType + 1;
             can.Use();
         } 
         else if (canHarvest && item is ItemScyth)
@@ -92,10 +126,12 @@ public class Crop : Station
     }
 
     bool CanWater(CropType cropType) =>
-        cropType == CropType.Sowed || 
-        cropType == CropType.Sprout ||
-        cropType == CropType.Juvenile ||
-        cropType == CropType.Mature
+        !isWatered && (
+            cropType == CropType.Sowed || 
+            cropType == CropType.Sprout ||
+            cropType == CropType.Juvenile ||
+            cropType == CropType.Mature
+        )
     ;
     
     bool CanHarvest(CropType cropType) =>
@@ -127,38 +163,6 @@ public class Crop : Station
 
         return numProduce;
     }
-
-    private Color GetCropColor(CropType cropType)
-    {
-        var color = Color.magenta;
-
-        switch (cropType)
-        {
-            case CropType.Plain: 
-                color = Color.green;
-                break;
-            case CropType.Tilled:
-                color = Color.yellow;
-                break;
-            case CropType.Sowed:
-                color = Color.gray;
-                break;
-            case CropType.Sprout:
-                color = Color.blue;
-                break;
-            case CropType.Juvenile:
-                color = Color.cyan;
-                break;
-            case CropType.Mature:
-                color = Color.red;
-                break;
-            case CropType.Overgrown:
-                color = Color.black;
-                break;
-        }
-
-        return color;
-    }
     
     private GameObject GetCropPrefab(CropType cropType)
     {
@@ -166,11 +170,11 @@ public class Crop : Station
 
         switch (cropType)
         {
-            case CropType.Plain: 
-                asset = null;
+            case CropType.Plain:
+                meshFilter.mesh = plainMesh;
                 break;
             case CropType.Tilled:
-                asset = null;
+                meshFilter.mesh = tilledMesh;
                 break;
             case CropType.Sowed:
                 asset = null;
@@ -192,14 +196,21 @@ public class Crop : Station
         return asset;
     }
 
+    void ChangeMaterial(Material m)
+    {
+        var meshRenderer = GetComponentInChildren<MeshRenderer>();
+        meshRenderer.material = m;
+    }
+
     void CropTransition(CropType from, CropType to) {
-        cropMaterial.color = GetCropColor(to);
         cropType = to;
         
         if(plantModel != null) Destroy(plantModel);
+        
         GameObject prefab = GetCropPrefab(to);
-            if(prefab!=null) {
-                plantModel = Instantiate(prefab, transform);
-            }
+        
+        if(prefab!=null) {
+            plantModel = Instantiate(prefab, transform);
+        }
     } 
 }
