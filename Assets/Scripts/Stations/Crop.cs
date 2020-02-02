@@ -133,6 +133,11 @@ public class Crop : Station
 
             nextCropType = cropType + 1;
             can.Use();
+
+            if (plantModel)
+            {
+                plantModel.transform.DOShakeRotation(0.5f, 20f, 5, 10, true);
+            }
         } 
         else if (canHarvest && item is ItemScyth)
         {

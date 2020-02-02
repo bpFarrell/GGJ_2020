@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -8,8 +9,7 @@ public class SeedBox : Station {
     public PlantType plantType;
 
     private ItemSeedBag resource;
-
-
+    
     private void Start() {
         resource = Resources.Load<ItemSeedBag>("Seeds");
     }
@@ -22,12 +22,14 @@ public class SeedBox : Station {
             ItemSeedBag bag = SpawnSeed();
             player.AssignToHand(bag);
             bag.PickedUp(player);
+
+            transform.DOShakeScale(0.5f, 0.5f);
         }
     }
 
     public ItemSeedBag SpawnSeed() {
         var result = Instantiate(resource, transform.position + (Vector3.back), Quaternion.identity);
-        result.plantType = this.plantType;
+        result.plantType = plantType;
         return result;
     }
 }
