@@ -73,9 +73,9 @@ public class ItemBase : MonoBehaviour, IInteractable
         //if (rb == null || rb.isKinematic == true) return;
 
         //should be flying, check for out of bounds
-        if (transform.position.x < -PlayAreaSettings.xHalfWidth)
+        if (transform.position.x < -PlayAreaSettings.xHalfWidth+1)
         {
-            transform.position = new Vector3(-PlayAreaSettings.xHalfWidth, transform.position.y, transform.position.z);
+            transform.position = new Vector3(-PlayAreaSettings.xHalfWidth+1, transform.position.y, transform.position.z);
             //rb.isKinematic = true;
             rb.velocity = new Vector3(-rb.velocity.x, rb.velocity.y, rb.velocity.z);
             //rb.isKinematic = false;
@@ -93,7 +93,7 @@ public class ItemBase : MonoBehaviour, IInteractable
             transform.position = new Vector3(transform.position.x, transform.position.y, -PlayAreaSettings.zHalfWidth);
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, -rb.velocity.z);
         }
-        else if (transform.position.z > PlayAreaSettings.xHalfWidth)
+        else if (transform.position.z > PlayAreaSettings.zHalfWidth)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, PlayAreaSettings.zHalfWidth);
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, -rb.velocity.z);
