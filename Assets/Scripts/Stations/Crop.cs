@@ -8,21 +8,29 @@ public class Crop : Station
 {
     private const int PRODUCE_SPAWN_RADIUS = 1;
     private Dictionary<PlantType, GameObject> produceLookup;
+    private Dictionary<PlantType, GameObject[]> modelLookup;
     public CropType cropType { get; private set; }
     public PlantType plantType { get; private set; }
 
     public Material cropMaterial;
 
+    private GameObject plantModel = null;
+
     private void Start()
     {
         cropType = CropType.Plain;
-        cropMaterial = GetComponentInChildren<MeshRenderer>().material;
+        cropMaterial = new Material(GetComponentInChildren<MeshRenderer>().material);
         
         produceLookup = new Dictionary<PlantType, GameObject>
         {
             {PlantType.Red, Resources.Load<GameObject>("crops/red")},
             {PlantType.Green, Resources.Load<GameObject>("crops/green")},
             {PlantType.Yellow, Resources.Load<GameObject>("crops/yellow")}
+        };
+        modelLookup = new Dictionary<PlantType, GameObject[]> {
+            {PlantType.Red, new [] {Resources.Load<GameObject>("crops/RedPlant_1"), Resources.Load<GameObject>("crops/RedPlant_2"), Resources.Load<GameObject>("crops/RedPlant_3")}},
+            {PlantType.Green, new [] {Resources.Load<GameObject>("crops/GreenPlant_1"), Resources.Load<GameObject>("crops/GreenPlant_2"), Resources.Load<GameObject>("crops/GreenPlant_3")}},
+            {PlantType.Yellow, new [] {Resources.Load<GameObject>("crops/YellowPlant_1"), Resources.Load<GameObject>("crops/YellowPlant_2"), Resources.Load<GameObject>("crops/YellowPlant_3")}}
         };
     }
     public override void Interact(PlayerController player)
@@ -46,8 +54,9 @@ public class Crop : Station
         else if (canSeed && item is ItemSeedBag bag)
         {
             plantType = bag.plantType;
+            Destroy(bag.gameObject);
             CropTransition(cropType, CropType.Sowed);
-            player.UnassignHand();
+            player.DestroyHeldItem();
         }
         else if (canWater && item is ItemWatteringCan can && !can.isEmpty)
         {
@@ -121,7 +130,7 @@ public class Crop : Station
 
     private Color GetCropColor(CropType cropType)
     {
-        var color = Color.red;
+        var color = Color.magenta;
 
         switch (cropType)
         {
@@ -137,13 +146,60 @@ public class Crop : Station
             case CropType.Sprout:
                 color = Color.blue;
                 break;
+            case CropType.Juvenile:
+                color = Color.cyan;
+                break;
+            case CropType.Mature:
+                color = Color.red;
+                break;
+            case CropType.Overgrown:
+                color = Color.black;
+                break;
         }
 
         return color;
+    }
+    
+    private GameObject GetCropPrefab(CropType cropType)
+    {
+        GameObject asset = null;
+
+        switch (cropType)
+        {
+            case CropType.Plain: 
+                asset = null;
+                break;
+            case CropType.Tilled:
+                asset = null;
+                break;
+            case CropType.Sowed:
+                asset = null;
+                break;
+            case CropType.Sprout:
+                asset = Resources.Load<GameObject>("crops/sprout");
+                break;
+            case CropType.Juvenile:
+                asset = modelLookup[plantType][0];
+                break;
+            case CropType.Mature:
+                asset = modelLookup[plantType][1];
+                break;
+            case CropType.Overgrown:
+                asset = modelLookup[plantType][2];
+                break;
+        }
+
+        return asset;
     }
 
     void CropTransition(CropType from, CropType to) {
         cropMaterial.color = GetCropColor(to);
         cropType = to;
+        
+        if(plantModel != null) Destroy(plantModel);
+        GameObject prefab = GetCropPrefab(to);
+            if(prefab!=null) {
+                plantModel = Instantiate(prefab, transform);
+            }
     } 
 }

@@ -22,12 +22,12 @@ public class PlayerController : ItemBase
     //public float speed = 2;
     public float chargeTime = 0;
     bool justPickedUp = false;
+    public bool isCharging; 
 
     List<IInteractable> nears;
     IInteractable nearInteraction;
 
     static int claimedPlayers = 0;
-
 
 
     void Awake()
@@ -70,6 +70,7 @@ public class PlayerController : ItemBase
             if (heldItem != null)
             {
                 chargeTime = 0;
+                isCharging = true;
             }
             else if (nearInteraction != null)
             {
@@ -82,6 +83,7 @@ public class PlayerController : ItemBase
             if (MaybeDoingSomething())
             {
                 UseToolOnThing();
+                isCharging = false;
             }
 
             Debug.Log("You Actioned!");
@@ -96,12 +98,13 @@ public class PlayerController : ItemBase
                 }
             }
             justPickedUp = false;
+            isCharging = false;
         }
         else if (player.GetButton("Action"))
         {
             if (heldItem != null && nearInteraction != null && heldItem.gameObject != nearInteraction.GetGameObject())
             {
-                UseToolOnThing();
+                //UseToolOnThing();
             }
             else if (!justPickedUp && heldItem != null)
             {
@@ -160,8 +163,8 @@ public class PlayerController : ItemBase
     /// </summary>
     void UseToolOnThing()
     {
-        nearInteraction.Interact(this);
         Debug.Log("Doing something with "+heldItem.name+" on "+nearInteraction.GetGameObject().name);
+        nearInteraction.Interact(this);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -225,6 +228,7 @@ public class PlayerController : ItemBase
 
     public void ThrowHeld(float timeCharged)
     {
+        isCharging = false;
         Debug.Log(name + " THROW!!");
         //heldItem.Dropped(this);
         heldItem.transform.parent = null;
@@ -249,6 +253,12 @@ public class PlayerController : ItemBase
             rb.velocity = throwV3;
         }
 
+        UnassignHand();
+    }
+
+    public void DestroyHeldItem() {
+        nears.Remove(heldItem);
+        Destroy(heldItem);
         UnassignHand();
     }
 
