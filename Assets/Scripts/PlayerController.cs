@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (player.GetButtonDown("Action")) {
-            if (nearInteraction != null&& !(nearInteraction is ItemBase)) {
+            if (nearInteraction != null && !(nearInteraction is ItemBase)) {
                 nearInteraction.Interact(this);
             } else if (heldItem != null) {
                 heldItem.Dropped(this);
@@ -42,14 +42,17 @@ public class PlayerController : MonoBehaviour
         transform.position += targetDir;
     }
     private void OnTriggerEnter(Collider other) {
-        Debug.Log(other.name);
-        IInteractable interact = other.GetComponent<IInteractable>();
+        Debug.Log($"OnTriggerEnter [{other.name}]");
+        IInteractable interact = other.GetComponentInParent<IInteractable>();
+        
         nearInteraction = interact;
         interact.EnterRange(this);
 
     }
     private void OnTriggerExit(Collider other) {
-        IInteractable interact = other.GetComponent<IInteractable>();
+        Debug.Log($"OnTriggerExit [{other.name}]");
+        IInteractable interact = other.GetComponentInParent<IInteractable>();
+        
         nearInteraction = null;
         interact.LeaveRange(this);
     }
