@@ -7,8 +7,12 @@ public class CarRumble : MonoBehaviour {
 
     public Transform target = null;
 
-    private void Update() {
+    private void Start() {
         if (target == null) target = transform;
-        target.DOShakePosition(0.05f, rumble, 5, 45F);
+        ShakePosition();
+    }
+
+    private void ShakePosition() {
+        target.DOShakePosition(0.05f, rumble, 5, 45F).onComplete += ShakePosition;
     }
 }

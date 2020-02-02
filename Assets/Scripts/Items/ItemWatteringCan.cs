@@ -7,7 +7,7 @@ public class ItemWatteringCan : ItemBase
 {
     public int maxWaterStacks = 3;
     public int currentWater;
-    public bool isEmpty => currentWater == null;
+    public bool isEmpty => currentWater == 0;
     public void Fill() {
         currentWater = maxWaterStacks;
     }

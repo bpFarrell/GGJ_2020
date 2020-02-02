@@ -22,6 +22,7 @@ public class PlayerController : ItemBase
     //public float speed = 2;
     public float chargeTime = 0;
     bool justPickedUp = false;
+    public bool isCharging; 
 
     List<IInteractable> nears;
     IInteractable nearInteraction;
@@ -29,10 +30,10 @@ public class PlayerController : ItemBase
     static int claimedPlayers = 0;
 
 
-
     void Awake()
     {
         base.Awake();
+
         Debug.Log("player awake "+name);
         player = ReInput.players.GetPlayer(claimedPlayers);
         claimedPlayers++;
@@ -46,7 +47,11 @@ public class PlayerController : ItemBase
 
     bool MaybeDoingSomething()
     {
-        return heldItem != null && nearInteraction != null && heldItem.gameObject != nearInteraction.GetGameObject();
+        return heldItem != null
+            && nearInteraction != null 
+            && heldItem.gameObject != nearInteraction.GetGameObject()
+            && (nearInteraction as Station) != null
+            ;
     }
 
     // Update is called once per frame
@@ -70,6 +75,7 @@ public class PlayerController : ItemBase
             if (heldItem != null)
             {
                 chargeTime = 0;
+                isCharging = true;
             }
             else if (nearInteraction != null)
             {
@@ -82,6 +88,7 @@ public class PlayerController : ItemBase
             if (MaybeDoingSomething())
             {
                 UseToolOnThing();
+                isCharging = false;
             }
 
             Debug.Log("You Actioned!");
@@ -96,12 +103,13 @@ public class PlayerController : ItemBase
                 }
             }
             justPickedUp = false;
+            isCharging = false;
         }
         else if (player.GetButton("Action"))
         {
             if (heldItem != null && nearInteraction != null && heldItem.gameObject != nearInteraction.GetGameObject())
             {
-                UseToolOnThing();
+                //UseToolOnThing();
             }
             else if (!justPickedUp && heldItem != null)
             {
@@ -194,7 +202,8 @@ public class PlayerController : ItemBase
         float dd;
         for (int i = 0; i<nears.Count; i++)
         {
-            if (heldItem == nears[i] as ItemBase || nears[i]==null) continue;
+            if (nears[i] == null) continue;
+            if (heldItem == nears[i] as ItemBase && !(nears[i] is Station)) continue;
             dd = (nears[i].position - transform.position).magnitude;
             if (dd < d)
             {
@@ -225,6 +234,7 @@ public class PlayerController : ItemBase
 
     public void ThrowHeld(float timeCharged)
     {
+        isCharging = false;
         Debug.Log(name + " THROW!!");
         //heldItem.Dropped(this);
         heldItem.transform.parent = null;
@@ -249,6 +259,12 @@ public class PlayerController : ItemBase
             rb.velocity = throwV3;
         }
 
+        UnassignHand();
+    }
+
+    public void DestroyHeldItem() {
+        nears.Remove(heldItem);
+        Destroy(heldItem);
         UnassignHand();
     }
 
