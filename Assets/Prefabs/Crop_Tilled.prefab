@@ -65,6 +65,9 @@ MonoBehaviour:
     type: 3}
   plainMesh: {fileID: 6525949916285243375, guid: 7ee7747461f484149802f2ae69b0e3cf,
     type: 3}
+  rockHealth: 5
+  rockPrefab: {fileID: 8794396849048042022, guid: faeb288392064423eba3f76697a1a645,
+    type: 3}
 --- !u!1001 &1519893373038424565
 PrefabInstance:
   m_ObjectHideFlags: 0
