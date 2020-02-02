@@ -21,6 +21,7 @@ public class SeedBox : Station {
         if (player.heldItem == null) {
             ItemSeedBag bag = SpawnSeed();
             player.AssignToHand(bag);
+            bag.PickedUp(player);
         }
     }
 
