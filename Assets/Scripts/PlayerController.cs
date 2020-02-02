@@ -160,8 +160,8 @@ public class PlayerController : ItemBase
     /// </summary>
     void UseToolOnThing()
     {
-        nearInteraction.Interact(this);
         Debug.Log("Doing something with "+heldItem.name+" on "+nearInteraction.GetGameObject().name);
+        nearInteraction.Interact(this);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -194,7 +194,7 @@ public class PlayerController : ItemBase
         float dd;
         for (int i = 0; i<nears.Count; i++)
         {
-            if (heldItem == nears[i] as ItemBase) continue;
+            if (heldItem == nears[i] as ItemBase || nears[i]==null) continue;
             dd = (nears[i].position - transform.position).magnitude;
             if (dd < d)
             {

@@ -45,7 +45,7 @@ public class DropBox : Station
             Destroy(target.go);
             items.Remove(target);
             produce.heldBy.heldItem = null;
-            Destroy(produce);
+            Destroy(produce.gameObject);
             CheckIfDone();
         }
     }
