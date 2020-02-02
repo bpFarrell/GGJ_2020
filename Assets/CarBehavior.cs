@@ -15,4 +15,9 @@ public class CarBehavior : MonoBehaviour {
             punchTransform.DOPunchScale(new Vector3(0f, 0f, -.25f), .2f, 1, 0.2f);
         };
     }
+    public void Depart() {
+        transform.DOLocalMove(target + Vector3.forward * 7f, 5f).onComplete += () => {
+            Destroy(gameObject);
+        };
+    }
 }

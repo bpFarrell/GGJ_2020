@@ -47,11 +47,12 @@ public class CarManager : MonoBehaviour {
 
     private void SpawnCar(PlantType[] plantTypes) {
         if (CountNullCars() == 0) return;
-        var car = Instantiate(prefab, transform);
+        var go = Instantiate(prefab, transform);
         var nextAvailableIndex = NextAvailableIndex();
-        carList[nextAvailableIndex] = car;
-        car.target = positionList[nextAvailableIndex];
-        car.dropBox.InitDelivery(plantTypes);
+        carList[nextAvailableIndex] = go;
+        go.target = positionList[nextAvailableIndex];
+        go.dropBox.InitDelivery(plantTypes);
+        go.dropBox.onDelivered=go.Depart;
     }
 
     private int CountNullCars() {
