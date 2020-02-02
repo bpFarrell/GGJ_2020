@@ -25,7 +25,6 @@ public class Crop : Station
             {PlantType.Yellow, Resources.Load<GameObject>("crops/yellow")}
         };
     }
-
     public override void Interact(PlayerController player)
     {
         base.Interact(player);
@@ -37,6 +36,8 @@ public class Crop : Station
         
         var canWater = CanWater(cropType);
         var canHarvest = CanHarvest(cropType);
+
+        var animateItem = true;
 
         if (canTill && item is ItemHoe)
         {
@@ -60,6 +61,12 @@ public class Crop : Station
             ProduceProduce(plantType, produceCount);
             CropTransition(cropType, CropType.Plain);
         }
+        else
+        {
+            animateItem = false;
+        }
+
+        item?.StartAnimation(animateItem ? ItemAnimationType.Success : ItemAnimationType.Failure);
     }
 
     private void ProduceProduce(PlantType plantType, int numProduce = 1)
@@ -134,9 +141,8 @@ public class Crop : Station
 
         return color;
     }
-    
-    void CropTransition(CropType from, CropType to)
-    {
+
+    void CropTransition(CropType from, CropType to) {
         cropMaterial.color = GetCropColor(to);
         cropType = to;
     } 

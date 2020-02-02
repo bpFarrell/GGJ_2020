@@ -7,7 +7,7 @@ using System.Linq;
 namespace Cadence.StateMachine {
     using Utility;
 
-    public class CadenceHierarchyStateMachine : MonoBehaviour {//} UISingletonBehaviour<CadenceHierarchyStateMachine> {
+    public class CadenceHierarchyStateMachine :  UISingletonBehaviour<CadenceHierarchyStateMachine> {
         public string defaultState = "default";
         public string currentState { get; private set; }
         
