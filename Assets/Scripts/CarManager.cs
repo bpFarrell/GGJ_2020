@@ -52,6 +52,7 @@ public class CarManager : MonoBehaviour {
         carList[nextAvailableIndex] = go;
         go.target = positionList[nextAvailableIndex];
         go.dropBox.InitDelivery(plantTypes);
+        go.dropBox.onDelivered=go.Depart;
     }
 
     private int CountNullCars() {

@@ -8,7 +8,7 @@ public class DropBox : Station
     public List<GameObject> itemDisplay;
     private delegate void DeliveryComplete(DropBox box);
     private static DeliveryComplete onDeliveryComplete;
-
+    public System.Action onDelivered;
     private void OnEnable() {
         onDeliveryComplete += SomoneFinished;
     }
@@ -50,8 +50,10 @@ public class DropBox : Station
         }
     }
     private void CheckIfDone() {
-        if (items.Count == 0)
-            onDeliveryComplete(this);
+        if (items.Count != 0) return;
+        onDeliveryComplete(this);
+        if(onDelivered!=null)
+            onDelivered();
     }
     private void SomoneFinished(DropBox box) {
         Debug.Log("Moving Forward");

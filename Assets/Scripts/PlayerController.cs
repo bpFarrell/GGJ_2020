@@ -194,7 +194,8 @@ public class PlayerController : ItemBase
         float dd;
         for (int i = 0; i<nears.Count; i++)
         {
-            if (heldItem == nears[i] as ItemBase || nears[i]==null) continue;
+            if (nears[i] == null) continue;
+            if (heldItem == nears[i] as ItemBase&&!(nears[i] is Station)) continue;
             dd = (nears[i].position - transform.position).magnitude;
             if (dd < d)
             {

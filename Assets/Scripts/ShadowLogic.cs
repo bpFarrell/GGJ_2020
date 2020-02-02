@@ -18,5 +18,6 @@ public class ShadowLogic : MonoBehaviour
         Vector3 pos = target.transform.position;
         pos.y = 0.1f;
         transform.position = pos;
+        transform.parent = target;
     }
 }
