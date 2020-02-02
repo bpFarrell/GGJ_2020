@@ -21,7 +21,7 @@ public class PlayerController : ItemBase
     public ItemBase heldItem;
     //public float speed = 2;
     public float chargeTime = 0;
-    public bool justPickedUp = false;
+    bool justPickedUp = false;
     public bool isCharging; 
 
     List<IInteractable> nears;
@@ -33,6 +33,7 @@ public class PlayerController : ItemBase
     void Awake()
     {
         base.Awake();
+
         Debug.Log("player awake "+name);
         player = ReInput.players.GetPlayer(claimedPlayers);
         claimedPlayers++;
@@ -46,7 +47,11 @@ public class PlayerController : ItemBase
 
     bool MaybeDoingSomething()
     {
-        return heldItem != null && nearInteraction != null && heldItem.gameObject != nearInteraction.GetGameObject();
+        return heldItem != null
+            && nearInteraction != null 
+            && heldItem.gameObject != nearInteraction.GetGameObject()
+            && (nearInteraction as Station) != null
+            ;
     }
 
     // Update is called once per frame
@@ -198,7 +203,7 @@ public class PlayerController : ItemBase
         for (int i = 0; i<nears.Count; i++)
         {
             if (nears[i] == null) continue;
-            if (heldItem == nears[i] as ItemBase&&!(nears[i] is Station)) continue;
+            if (heldItem == nears[i] as ItemBase && !(nears[i] is Station)) continue;
             dd = (nears[i].position - transform.position).magnitude;
             if (dd < d)
             {
