@@ -173,7 +173,7 @@ public class Crop : Station
                 asset = null;
                 break;
             case CropType.Sowed:
-                asset = null;
+                asset = Resources.Load<GameObject>("crops/sowed");
                 break;
             case CropType.Sprout:
                 asset = Resources.Load<GameObject>("crops/sprout");
