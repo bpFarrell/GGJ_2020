@@ -7,17 +7,19 @@ public class PlayerController : ItemBase
 {
     //"global" settings for interactions
     public static float launchAngleDegs = 40;
-    public static float launchSpeed = 30f; //units per sec
-    public static float minLaunchSpeed = 10f;
-    public static float maxPowerTime = 2;
-    public static float maxPower = 30;
+    public static float maxLaunchSpeed = 10f;
+    public static float minLaunchSpeed = 4f;
+    public static float maxPowerTime = .8f;
+    public static float smallDropTime = .2f; //before this, drop straight down. else throw with minlaunchspeed and up
+
+    public Mesh[] playerSkins;
 
     Animator animator;
 
     public GameObject handPivot;
     Player player;
     public ItemBase heldItem;
-    public float speed = 2;
+    //public float speed = 2;
     public float chargeTime = 0;
     bool justPickedUp = false;
 
@@ -40,26 +42,42 @@ public class PlayerController : ItemBase
         animator.SetBool("Grounded", true);
     }
 
+    bool MaybeDoingSomething()
+    {
+        return heldItem != null && nearInteraction != null && heldItem.gameObject != nearInteraction.GetGameObject();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (heldBy != null) return;
+        if (heldBy != null)
+        {
+            if (player.GetButtonDown("Action"))
+            {
+                //get unheld
+                heldBy.ThrowHeld(smallDropTime+.01f);
+            }
+            return;
+        }
 
         if (player.GetButtonDown("Action"))
         {
+            Debug.Log("held: " + (heldItem == null ? "null" : heldItem.name)
+                + "  nearInteraction: " + (nearInteraction == null ? "null" : nearInteraction.GetGameObject().name));
+
             if (heldItem != null)
             {
                 chargeTime = 0;
             }
             else if (nearInteraction != null)
             {
+                Debug.Log("near name: " + (nearInteraction as MonoBehaviour).name);
                 Debug.Log(name + " Picking up");
                 nearInteraction.Interact(this); //this calls AssignToHand()
                 justPickedUp = true;
             }
 
-            if (heldItem != null && nearInteraction != null && heldItem.gameObject != nearInteraction.GetGameObject())
+            if (MaybeDoingSomething())
             {
                 UseToolOnThing();
             }
@@ -68,16 +86,12 @@ public class PlayerController : ItemBase
         }
         else if (player.GetButtonUp("Action"))
         {
-            if (!justPickedUp && heldItem != null)
+            if (!MaybeDoingSomething())
             {
-                Debug.Log(name + " THROW!!");
-                //heldItem.Dropped(this);
-                heldItem.transform.parent = null;
-                float lspeed = launchSpeed;
-                if (lspeed < minLaunchSpeed) lspeed = minLaunchSpeed;
-                heldItem.Thrown(Quaternion.AngleAxis(-launchAngleDegs, transform.right) * transform.forward,
-                    lspeed * chargeTime / maxPowerTime);
-                heldItem = null;
+                if (!justPickedUp && heldItem != null)
+                {
+                    ThrowHeld(chargeTime);
+                }
             }
             justPickedUp = false;
         }
@@ -100,28 +114,47 @@ public class PlayerController : ItemBase
         Vector2 dir2D = player.GetAxis2D("MoveX", "MoveY");
         Vector3 dir = new Vector3(dir2D.x, 0, dir2D.y);
         float moveSpeed = dir.magnitude;
-
+        if (player.GetButton("Action") && heldItem != null) moveSpeed = 0;
         //Debug.Log("stick mag: " + moveSpeed);
+
+        //make sure we are upright-ish
+        if (heldBy == null && transform.up.y < 1)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, 
+                transform.rotation * Quaternion.FromToRotation(transform.up, Vector3.up), .05f);
+        }
+
         if (moveSpeed == 0)
         {
             animator.SetFloat("MoveSpeed", 0);
-            return;
+            //return;
+            if (dir.magnitude == 0) return;
         }
 
         Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * 10);
         float faceScale = Vector3.Dot(transform.forward, dir.normalized);
         Vector3 targetDir = transform.forward * Time.deltaTime * faceScale;
-        transform.position += targetDir * speed * moveSpeed;
+        Vector3 newPos = transform.position + targetDir * PlayAreaSettings.playerSpeed * moveSpeed;
+        if (transform.position.x <= -PlayAreaSettings.middleHalfWidth && newPos.x > -PlayAreaSettings.middleHalfWidth)
+            newPos.x = -PlayAreaSettings.middleHalfWidth;
+        if (transform.position.x >= PlayAreaSettings.middleHalfWidth && newPos.x < PlayAreaSettings.middleHalfWidth)
+            newPos.x = PlayAreaSettings.middleHalfWidth;
+        Debug.Log("x: " + transform.position.x + "  new x: " + newPos.x + "  barrier: " + PlayAreaSettings.middleHalfWidth);
+
+        //transform.position += targetDir * PlayAreaSettings.playerSpeed * moveSpeed;
+        transform.position = newPos;
 
         //Debug.Log("movespeed: "+(targetDir.magnitude * speed));
         animator.SetFloat("MoveSpeed", moveSpeed);
 
         ClampToBounds();
+
+
     }
 
     /// <summary>
-    /// Assuming heldBy is the tool and nearInteraction is the thing...
+    /// Assuming heldItem is the tool and nearInteraction is the thing...
     /// </summary>
     void UseToolOnThing()
     {
@@ -158,6 +191,7 @@ public class PlayerController : ItemBase
         float dd;
         for (int i = 0; i<nears.Count; i++)
         {
+            if (heldItem == nears[i] as ItemBase) continue;
             dd = (nears[i].position - transform.position).magnitude;
             if (dd < d)
             {
@@ -167,6 +201,7 @@ public class PlayerController : ItemBase
             }
         }
         if (which == -1) nearInteraction = null;
+        Debug.Log("new near: " + (nearInteraction == null ? "null" :(nearInteraction as MonoBehaviour).name));
     }
 
     public void AssignToHand(ItemBase item)
@@ -175,6 +210,27 @@ public class PlayerController : ItemBase
         item.transform.parent = handPivot.transform;
         item.transform.localPosition = Vector3.zero;
         item.transform.localEulerAngles = Vector3.zero;
+    }
+
+    public void ItemTaken(ItemBase item) //ItemBase calls this
+    {
+        if (item == heldItem)
+        {
+            heldItem = null;
+        }
+    }
+
+    public void ThrowHeld(float timeCharged)
+    {
+        Debug.Log(name + " THROW!!");
+        //heldItem.Dropped(this);
+        heldItem.transform.parent = null;
+        float lspeed = Mathf.Clamp(minLaunchSpeed + (maxLaunchSpeed - minLaunchSpeed) * timeCharged / maxPowerTime,
+                                    minLaunchSpeed, maxLaunchSpeed);
+        if (timeCharged < smallDropTime) lspeed = minLaunchSpeed / 4;
+        heldItem.Thrown(Quaternion.AngleAxis(-launchAngleDegs, transform.right) * transform.forward,
+            lspeed);
+        heldItem = null;
     }
 
     public void DropItems(Vector3 throwV3)
