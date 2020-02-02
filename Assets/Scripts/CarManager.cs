@@ -47,12 +47,30 @@ public class CarManager : MonoBehaviour {
 
     private void SpawnCar(PlantType[] plantTypes) {
         if (CountNullCars() == 0) return;
-        var go = Instantiate(prefab, transform);
-        var nextAvailableIndex = NextAvailableIndex();
+        CarBehavior go = Instantiate(prefab, transform);
+        int nextAvailableIndex = NextAvailableIndex();
         carList[nextAvailableIndex] = go;
         go.target = positionList[nextAvailableIndex];
         go.dropBox.InitDelivery(plantTypes);
-        go.dropBox.onDelivered=go.Depart;
+        go.dropBox.onDelivered=()=> { DeliveryCompleted(go); };
+    }
+
+    private void DeliveryCompleted(CarBehavior car) {
+        int carIndex = IndexAtObject(car);
+        if (carIndex == -1 || carIndex != 0) return;
+
+        for (int i = 0; i < carList.Length; i++) {
+            if (carList[i].dropBox.isDelivered) {
+                carList[i].Depart(i);
+                carList[i] = null;
+            } else {
+                int nextIndex = NextAvailableIndex();
+                carList[i].target = positionList[nextIndex];
+                carList[nextIndex] = carList[i];
+                carList[i] = null;
+                carList[nextIndex].MoveToTarget(i);
+            }
+        }
     }
 
     private int CountNullCars() {
@@ -61,6 +79,13 @@ public class CarManager : MonoBehaviour {
     private int NextAvailableIndex() {
         for (var i = 0; i < carList.Length; i++) {
             if (carList[i] == null) return i;
+        }
+        return -1;
+    }
+
+    private int IndexAtObject(CarBehavior car) {
+        for (int i = 0; i < carList.Length; i++) {
+            if (carList[i] == car) return i;
         }
         return -1;
     }

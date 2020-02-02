@@ -7,17 +7,23 @@ public class CarBehavior : MonoBehaviour {
     public DropBox dropBox;
     
     private void Start() {
-        transform.DOLocalMove(target, 5f).onComplete += () => {
-            if (punchTransform == null) return;
-            punchTransform.DOPunchRotation(new Vector3(3.5f, 0F, 0F), .3f).onComplete += () => {
-                //transform.DOPunchRotation(new Vector3(-2.5f, 0F, 0F), .2f);
+        MoveToTarget();
+    }
+
+    public void MoveToTarget(float delay = 0) {
+        transform.DOLocalMove(transform.localPosition, delay).onComplete += () => {
+            transform.DOLocalMove(target, 5f).onComplete += () => {
+                if (punchTransform == null) return;
+                punchTransform.DOPunchRotation(new Vector3(3.5f, 0F, 0F), .3f);
+                punchTransform.DOPunchScale(new Vector3(0f, 0f, -.25f), .2f, 1, 0.2f);
             };
-            punchTransform.DOPunchScale(new Vector3(0f, 0f, -.25f), .2f, 1, 0.2f);
         };
     }
-    public void Depart() {
-        transform.DOLocalMove(target + Vector3.forward * 7f, 5f).onComplete += () => {
-            Destroy(gameObject);
+    public void Depart(float delay = 0) {
+        transform.DOLocalMove(transform.localPosition, delay).onComplete += () => {
+            transform.DOLocalMove(target + Vector3.forward * 7f, 5f).onComplete += () => {
+                Destroy(gameObject);
+            };
         };
     }
 }
