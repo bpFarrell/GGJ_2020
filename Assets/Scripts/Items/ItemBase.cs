@@ -106,6 +106,10 @@ public class ItemBase : MonoBehaviour, IInteractable
     }
 
     public virtual void PickedUp(PlayerController player) {
+        if (heldBy != null)
+        {
+            heldBy.ItemTaken(this);
+        }
         heldBy = player;
         lastHeld = player.gameObject;
         if (rb != null) rb.isKinematic = true;
