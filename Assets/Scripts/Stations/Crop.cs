@@ -18,6 +18,10 @@ public class Crop : Station
     private Material cropMaterial;
     private Material wetMaterial;
     private float lastWatered = float.MaxValue;
+    private float maturedAt = float.MaxValue;
+    
+    public float matureToOvergrownWaitTime = 15f;
+    
     private CropType nextCropType; // used when water is done
 
     public bool isWatered = false;
@@ -73,6 +77,11 @@ public class Crop : Station
             
             CropTransition(cropType, nextCropType);
             ChangeMaterial(cropMaterial);
+        }
+
+        if (cropType == CropType.Mature && maturedAt + matureToOvergrownWaitTime < Time.time)
+        {
+            CropTransition(cropType, CropType.Overgrown);
         }
     }
 
@@ -159,8 +168,7 @@ public class Crop : Station
         !isWatered && (
             cropType == CropType.Sowed || 
             cropType == CropType.Sprout ||
-            cropType == CropType.Juvenile ||
-            cropType == CropType.Mature
+            cropType == CropType.Juvenile
         )
     ;
     
@@ -241,6 +249,11 @@ public class Crop : Station
         
         if(prefab!=null) {
             plantModel = Instantiate(prefab, transform);
+        }
+
+        if (cropType == CropType.Mature)
+        {
+            maturedAt = Time.time;
         }
     } 
 }
