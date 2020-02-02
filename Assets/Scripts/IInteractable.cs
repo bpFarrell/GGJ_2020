@@ -5,6 +5,8 @@ using Rewired;
 
 public interface IInteractable
 {
+    Vector3 position { get; }
+    GameObject GetGameObject();
     bool isCurrentlyInteractable { get; }
     void Interact(PlayerController player);
     void EnterRange(PlayerController player);
