@@ -22,7 +22,7 @@ public class PlayerController : ItemBase
 
     static int claimedPlayers = 0;
 
-    
+
 
     void Awake()
     {
@@ -36,8 +36,10 @@ public class PlayerController : ItemBase
     // Update is called once per frame
     void Update()
     {
-        if (player.GetButtonDown("Action")) {
-            if (heldItem != null) {
+        if (player.GetButtonDown("Action"))
+        {
+            if (heldItem != null)
+            {
                 throwSpeed = 0;
             }
             else if (nearInteraction != null)
@@ -54,7 +56,8 @@ public class PlayerController : ItemBase
 
             Debug.Log("You Actioned!");
         }
-        else if (player.GetButtonUp("Action")) {
+        else if (player.GetButtonUp("Action"))
+        {
             if (!justPickedUp && heldItem != null)
             {
                 Debug.Log(name + " THROW!!");
@@ -66,7 +69,8 @@ public class PlayerController : ItemBase
             }
             justPickedUp = false;
         }
-        else if (player.GetButton("Action")) {
+        else if (player.GetButton("Action"))
+        {
             if (!justPickedUp && heldItem != null)
             {
                 //Debug.Log(name + " charge: " + throwSpeed);
@@ -79,7 +83,7 @@ public class PlayerController : ItemBase
         Vector2 dir2D = player.GetAxis2D("MoveX", "MoveY");
         Vector3 dir = new Vector3(dir2D.x, 0, dir2D.y);
 
-        if (dir.magnitude == 0)return;
+        if (dir.magnitude == 0) return;
 
         Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * 10);
@@ -88,7 +92,8 @@ public class PlayerController : ItemBase
         transform.position += targetDir * speed;
     }
 
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerEnter(Collider other)
+    {
         IInteractable interact = other.GetComponent<IInteractable>();
         if (interact == null) return;
         Debug.Log(name + " trigger enter: " + other.name);
@@ -98,7 +103,8 @@ public class PlayerController : ItemBase
         Debug.LogWarning("IMPLEMENT UPDATE NEAR!!");
     }
 
-    private void OnTriggerExit(Collider other) {
+    private void OnTriggerExit(Collider other)
+    {
         IInteractable interact = other.GetComponent<IInteractable>();
         if (interact == null) return;
         Debug.Log(name + " trigger leave: " + other.name);
@@ -109,11 +115,34 @@ public class PlayerController : ItemBase
         Debug.LogWarning("IMPLEMENT UPDATE NEAR!!");
     }
 
-    public void AssignToHand(ItemBase item) {
+    public void AssignToHand(ItemBase item)
+    {
         heldItem = item;
         item.transform.parent = handPivot.transform;
         item.transform.localPosition = Vector3.zero;
         item.transform.localEulerAngles = Vector3.zero;
     }
 
+
+    public void DropItems(Vector3 throwV3)
+    {
+        var lastItem = heldItem;
+
+        lastItem.transform.parent = null;
+
+        var rb = GetComponent<Rigidbody>();
+
+        if (rb)
+        {
+            rb.velocity = throwV3;
+        }
+
+        UnassignHand();
+    }
+
+    public void UnassignHand()
+    {
+        heldItem = null;
+    }
 }
+

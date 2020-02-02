@@ -1,7 +1,12 @@
-namespace Stations
+
+using UnityEngine;
+
+public class RepairBench : Station
 {
-    public class RepairBench
+    public override void Interact(PlayerController player)
     {
+        base.Interact(player);
         
+        Debug.Log("Repair Bench Interact!");
     }
 }
