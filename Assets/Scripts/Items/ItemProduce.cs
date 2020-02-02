@@ -27,7 +27,8 @@ namespace Items
         }
         public void Update() {
             if(spawnTime + lifeSpan < Time.time) {
-                heldBy.ThrowHeld(0.1f);
+                if(heldBy!=null)
+                    heldBy.ThrowHeld(0.1f);
                 transform.DOScale(0, 0.5f).onComplete = () => { Destroy(gameObject); };
                 Destroy(this);
             }
