@@ -56,7 +56,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41733f37f1b84cfcb20004120b86f7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cropMaterial: {fileID: 0}
+  cropType: 0
+  plantType: 0
+  isWatered: 0
+  wateringWaitTime: 10
+  meshFilter: {fileID: 3257805166274568409}
+  tilledMesh: {fileID: -4283000455385496155, guid: c788c5b7de8db7d4daeeb9c89e3fdc02,
+    type: 3}
+  plainMesh: {fileID: 6525949916285243375, guid: 7ee7747461f484149802f2ae69b0e3cf,
+    type: 3}
 --- !u!1001 &1519893373038424565
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -155,6 +163,12 @@ GameObject:
 --- !u!4 &5795299526129834735 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: c788c5b7de8db7d4daeeb9c89e3fdc02,
+    type: 3}
+  m_PrefabInstance: {fileID: 1519893373038424565}
+  m_PrefabAsset: {fileID: 0}
+--- !u!33 &3257805166274568409 stripped
+MeshFilter:
+  m_CorrespondingSourceObject: {fileID: -5178661895559278292, guid: c788c5b7de8db7d4daeeb9c89e3fdc02,
     type: 3}
   m_PrefabInstance: {fileID: 1519893373038424565}
   m_PrefabAsset: {fileID: 0}
