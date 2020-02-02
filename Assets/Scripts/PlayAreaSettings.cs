@@ -1,8 +1,10 @@
 ﻿
+using UnityEngine;
+
 public class PlayAreaSettings
 {
-    static public float xHalfWidth = 8;
-    static public float zHalfWidth = 4;
+    static public float xHalfWidth = 7.5f;
+    static public float zHalfWidth = 3.5f;
     static public float playerSpeed = 4;
 }
 
