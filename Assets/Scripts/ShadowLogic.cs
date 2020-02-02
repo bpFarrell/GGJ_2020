@@ -21,6 +21,6 @@ public class ShadowLogic : MonoBehaviour
         transform.parent = target;
         transform.eulerAngles = new Vector3(90, 0, 0);
         float dist = target.position.y - pos.y;
-        transform.localScale = Vector3.one * (0.5f + dist);
+        transform.localScale = Vector3.one * (0.5f + Mathf.Max(dist,0));
     }
 }
