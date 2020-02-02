@@ -7,10 +7,9 @@ public class PlayerController : ItemBase
 {
     //"global" settings for interactions
     public static float launchAngleDegs = 40;
-    public static float launchSpeed = 30f; //units per sec
-    public static float minLaunchSpeed = 10f;
-    public static float maxPowerTime = 1.3f;
-    public static float maxPower = 25f;
+    public static float maxLaunchSpeed = 10f;
+    public static float minLaunchSpeed = 4f;
+    public static float maxPowerTime = .8f;
 
     public Mesh[] playerSkins;
 
@@ -85,15 +84,15 @@ public class PlayerController : ItemBase
                     Debug.Log(name + " THROW!!");
                     //heldItem.Dropped(this);
                     heldItem.transform.parent = null;
-                    float lspeed = launchSpeed;
-                    if (lspeed < minLaunchSpeed) lspeed = minLaunchSpeed;
+                    float lspeed = Mathf.Clamp(minLaunchSpeed + (maxLaunchSpeed-minLaunchSpeed) * chargeTime / maxPowerTime,
+                                                minLaunchSpeed, maxLaunchSpeed);
+                    if (chargeTime < .2) lspeed = minLaunchSpeed / 4;
                     heldItem.Thrown(Quaternion.AngleAxis(-launchAngleDegs, transform.right) * transform.forward,
-                        lspeed * chargeTime / maxPowerTime);
+                        lspeed);
                     heldItem = null;
                 }
             }
             justPickedUp = false;
-                
         }
         else if (player.GetButton("Action"))
         {

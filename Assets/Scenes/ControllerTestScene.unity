@@ -249,13 +249,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: FemaleSimpleMovement1
       objectReference: {fileID: 0}
+    - target: {fileID: 120508, guid: 21d8bd27e26a4eb45935a21fea5353e9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 434286, guid: 21d8bd27e26a4eb45935a21fea5353e9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.2859268
       objectReference: {fileID: 0}
     - target: {fileID: 434286, guid: 21d8bd27e26a4eb45935a21fea5353e9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0.019
       objectReference: {fileID: 0}
     - target: {fileID: 434286, guid: 21d8bd27e26a4eb45935a21fea5353e9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2003,20 +2007,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &2132538875
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2132538868}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &5113939400353868934
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2057,7 +2047,7 @@ PrefabInstance:
     - target: {fileID: 5113939400503316677, guid: b215ef676aaa8ec4ebc1c30096347c71,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5680001
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 5113939400503316677, guid: b215ef676aaa8ec4ebc1c30096347c71,
         type: 3}
@@ -2126,7 +2116,7 @@ PrefabInstance:
     - target: {fileID: 6626632453628765936, guid: 8222ccd6a04d31e4592a0162892980b7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0.019000001
       objectReference: {fileID: 0}
     - target: {fileID: 6626632453628765936, guid: 8222ccd6a04d31e4592a0162892980b7,
         type: 3}

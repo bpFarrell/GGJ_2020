@@ -135,7 +135,7 @@ public class ItemBase : MonoBehaviour, IInteractable
     {
         isFlyingStart = false;
         rb.isKinematic = true;
-        col.isTrigger = false;
+        col.isTrigger = true;
         //Debug.Log("End throw position1: " + (col.bounds.center.y - col.bounds.size.y));
         //transform.position -= (col.bounds.center.y - col.bounds.size.y) * Vector3.up;
         transform.position = new Vector3(transform.position.x, defaultY, transform.position.z);
