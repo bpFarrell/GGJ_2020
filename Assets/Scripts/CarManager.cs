@@ -14,11 +14,14 @@ public class CarManager : MonoBehaviour {
     public bool spawn;
     [HideInInspector]
     public static bool onFirstCar = true;
-
+    public static Action onFirstLoad;
     private void Start() {
-        Crop.OnFirstCrop += type => { SpawnCar(new[] {type}); };
+        Crop.OnFirstCrop += type => { SpawnCar(new[] { type }); };
     }
+    private void OnDisable() {
 
+        Crop.OnFirstCrop = null;
+    }
     private void Update() {
         if (spawn) {
             spawn = false;
