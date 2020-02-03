@@ -12,9 +12,10 @@ public class CarManager : MonoBehaviour {
     public AnimationCurve chanceCurve;
 
     public bool spawn;
+    public bool triggerEvent;
     [HideInInspector]
     public static bool onFirstCar = true;
-    public static Action onFirstLoad;
+    public Action onFirstLoad;
 
     public int numberOfCarsDelivered { get; set; }
     private void Start() {
@@ -28,6 +29,11 @@ public class CarManager : MonoBehaviour {
         if (spawn) {
             spawn = false;
             SpawnCar(RandomDropBox());
+        }
+
+        if (triggerEvent) {
+            triggerEvent = false;
+            onFirstLoad?.Invoke();
         }
     }
 
@@ -68,6 +74,7 @@ public class CarManager : MonoBehaviour {
             if (onFirstCar) {
                 onFirstCar = false;
                 RecursiveSpawnCar(RandomDropBox());
+                onFirstLoad?.Invoke();
             }
 
             numberOfCarsDelivered++;
@@ -87,6 +94,7 @@ public class CarManager : MonoBehaviour {
         if (carIndex == -1 || carIndex != 0) return;
 
         for (int i = 0; i < carList.Length; i++) {
+            if(carList[i] == null) continue;
             if (carList[i].dropBox.isDelivered) {
                 carList[i].Depart(i);
                 carList[i] = null;
