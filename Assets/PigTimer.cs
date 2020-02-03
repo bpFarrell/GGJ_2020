@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cadence.Utility;
 using DG.Tweening;
 using UnityEngine;
 
-public class PigTimer : MonoBehaviour
+public class PigTimer : SingletonBehaviour<PigTimer>
 {
     public List<PigTimerInstance> pigList = new List<PigTimerInstance>();
 

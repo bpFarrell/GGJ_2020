@@ -38,6 +38,9 @@ public class Crop : Station
     private GameObject plantModel = null;
     private GameObject rockInstance;
 
+    private bool hasFirstHarvest = false;
+    public static Action<PlantType> OnFirstCrop;
+
     private void Start()
     {
         meshFilter.mesh = plainMesh;
@@ -166,6 +169,10 @@ public class Crop : Station
             var produceLocation = new Vector3(unit.x, 0, unit.z);
             
             Instantiate(produceLookup[plantType], produceLocation, Quaternion.identity);
+            if(!hasFirstHarvest) {
+                hasFirstHarvest = true;
+                OnFirstCrop?.Invoke(plantType);
+            }
         }
     }
 

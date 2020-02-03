@@ -21,7 +21,7 @@ public class CarBehavior : MonoBehaviour {
     }
     public void Depart(float delay = 0) {
         transform.DOLocalMove(transform.localPosition, delay).onComplete += () => {
-            transform.DOLocalMove(target + Vector3.forward * 7f, 5f).onComplete += () => {
+            transform.DOLocalMove(transform.localPosition + Vector3.forward * 20, 5f).onComplete += () => {
                 Destroy(gameObject);
             };
         };

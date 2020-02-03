@@ -29,6 +29,7 @@ namespace Items
             MeshRenderer mr = progressRing.GetComponent<MeshRenderer>();
             ringMat = new Material(mr.material);
             mr.material = ringMat;
+            if (CarManager.onFirstCar) spawnTime = 9999;
         }
         public void Update() {
             float t = (Time.time - spawnTime) / lifeSpan;
