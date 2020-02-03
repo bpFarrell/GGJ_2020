@@ -6,14 +6,14 @@ using Random = UnityEngine.Random;
 public class CarManager : MonoBehaviour {
     public CarBehavior prefab;
 
-    public CarBehavior[] carList = {null, null, null};
+    public CarBehavior[] carList = { null, null, null };
     public Vector3[] positionList = new Vector3[3];
 
     public AnimationCurve chanceCurve;
 
     public bool spawn;
     [HideInInspector]
-    public bool onFirstCar = true;
+    public static bool onFirstCar = true;
 
     private void Start() {
         Crop.OnFirstCrop += type => { SpawnCar(new[] {type}); };
