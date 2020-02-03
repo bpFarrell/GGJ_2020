@@ -68,6 +68,14 @@ public class ItemBase : MonoBehaviour, IInteractable
 
             ClampToBounds();
         }
+
+        //lerp items back to original y position
+        if (!isHeld && rb.isKinematic == true && transform.position.y != defaultY)
+        {
+            float newy = transform.position.y - .09f;
+            if (newy < defaultY) newy = defaultY;
+            transform.position = new Vector3(transform.position.x, newy, transform.position.z);
+        }
     }
 
     public void ClampToBounds()
@@ -146,7 +154,8 @@ public class ItemBase : MonoBehaviour, IInteractable
         col.isTrigger = true;
         //Debug.Log("End throw position1: " + (col.bounds.center.y - col.bounds.size.y));
         //transform.position -= (col.bounds.center.y - col.bounds.size.y) * Vector3.up;
-        transform.position = new Vector3(transform.position.x, defaultY, transform.position.z);
+
+        //transform.position = new Vector3(transform.position.x, defaultY, transform.position.z);
         //Debug.Log("End throw position2: " + (col.bounds.center.y - col.bounds.size.y));
     }
 
@@ -190,7 +199,7 @@ public class ItemBase : MonoBehaviour, IInteractable
             Debug.Log("Break fall for " + name);
             isFlyingStart = false;
 
-            transform.position = new Vector3(transform.position.x, defaultY, transform.position.z);
+            //transform.position = new Vector3(transform.position.x, defaultY, transform.position.z);
             if (collision.gameObject == lastHeld) return;
             if (rb != null)
             {

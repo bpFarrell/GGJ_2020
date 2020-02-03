@@ -12,8 +12,6 @@ public class PlayerController : ItemBase
     public static float maxPowerTime = .8f;
     public static float smallDropTime = .2f; //before this, drop straight down. else throw with minlaunchspeed and up
 
-    public Mesh[] playerSkins;
-
     Animator animator;
 
     public GameObject handPivot;
