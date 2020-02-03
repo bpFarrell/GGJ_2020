@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
-using UnityEditor.UIElements;
+using Items;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -102,7 +102,7 @@ public class Crop : Station
 
         var animateItem = true;
         
-        if (canHammer)
+        if (canHammer && item is ItemHammer)
         {
             rockHealth--;
 
