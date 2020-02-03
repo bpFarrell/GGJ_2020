@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CarManager : MonoBehaviour {
     public CarBehavior prefab;
@@ -10,8 +12,13 @@ public class CarManager : MonoBehaviour {
     public AnimationCurve chanceCurve;
 
     public bool spawn;
+    [HideInInspector]
+    public bool onFirstCar = true;
 
-    private float counter;
+    private void Start() {
+        Crop.OnFirstCrop += type => { SpawnCar(new[] {type}); };
+    }
+
     private void Update() {
         if (spawn) {
             spawn = false;
@@ -52,7 +59,20 @@ public class CarManager : MonoBehaviour {
         carList[nextAvailableIndex] = go;
         go.target = positionList[nextAvailableIndex];
         go.dropBox.InitDelivery(plantTypes);
-        go.dropBox.onDelivered=()=> { DeliveryCompleted(go); };
+        go.dropBox.onDelivered= () => {
+            if (onFirstCar) {
+                onFirstCar = false;
+                RecursiveSpawnCar(RandomDropBox());
+            }
+            DeliveryCompleted(go);
+        };
+    }
+
+    private void RecursiveSpawnCar(PlantType[] plantTypes) {
+        SpawnCar(plantTypes);
+        PigTimer.Instance.SetTimer(15f, () => {
+            RecursiveSpawnCar(RandomDropBox());
+        });
     }
 
     private void DeliveryCompleted(CarBehavior car) {
@@ -76,6 +96,7 @@ public class CarManager : MonoBehaviour {
     private int CountNullCars() {
         return carList.Where((c) => { return c == null; }).Count();
     }
+    
     private int NextAvailableIndex() {
         for (var i = 0; i < carList.Length; i++) {
             if (carList[i] == null) return i;

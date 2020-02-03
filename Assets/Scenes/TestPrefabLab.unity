@@ -1850,7 +1850,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 671638965}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 220f8d74ce999fc4e983430cca30b490, type: 3}
   m_Name: 
@@ -1979,7 +1979,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 685305606}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 220f8d74ce999fc4e983430cca30b490, type: 3}
   m_Name: 
@@ -4526,7 +4526,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1459284311}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 220f8d74ce999fc4e983430cca30b490, type: 3}
   m_Name: 
@@ -4957,7 +4957,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1643569949}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 220f8d74ce999fc4e983430cca30b490, type: 3}
   m_Name: 
@@ -5757,7 +5757,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  spawn: 1
+  spawn: 0
+  onFirstCar: 1
 --- !u!4 &1831463240
 Transform:
   m_ObjectHideFlags: 0
@@ -6014,7 +6015,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff142cf26bd46f2489c4e4b15b5ac509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pigList: []
+  pigList:
+  - {fileID: 1371359636}
+  - {fileID: 1459284314}
+  - {fileID: 685305609}
+  - {fileID: 671638968}
+  - {fileID: 1643569952}
+  start: 0
 --- !u!4 &1899363060
 Transform:
   m_ObjectHideFlags: 0
