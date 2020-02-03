@@ -15,6 +15,8 @@ public class CarManager : MonoBehaviour {
     [HideInInspector]
     public static bool onFirstCar = true;
     public static Action onFirstLoad;
+
+    public int numberOfCarsDelivered { get; set; }
     private void Start() {
         Crop.OnFirstCrop += type => { SpawnCar(new[] { type }); };
     }
@@ -67,6 +69,8 @@ public class CarManager : MonoBehaviour {
                 onFirstCar = false;
                 RecursiveSpawnCar(RandomDropBox());
             }
+
+            numberOfCarsDelivered++;
             DeliveryCompleted(go);
         };
     }
