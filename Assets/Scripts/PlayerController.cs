@@ -1,4 +1,5 @@
-﻿using Rewired;
+﻿using System;
+using Rewired;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -264,6 +265,10 @@ public class PlayerController : ItemBase
         nears.Remove(heldItem);
         Destroy(heldItem);
         UnassignHand();
+    }
+
+    private void OnDestroy() {
+        claimedPlayers = 0;
     }
 
     public void UnassignHand()

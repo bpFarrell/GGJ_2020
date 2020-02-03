@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameTimer : MonoBehaviour
-{
+public class GameTimer : MonoBehaviour {
+    public CarManager carManager;
     public float secondsLong = 180;
     private float startTime;
     public bool isRunning;
@@ -12,18 +12,18 @@ public class GameTimer : MonoBehaviour
             return secondsLong - (Time.time - startTime);
         }
     }
-    private void OnEnable() {
-        CarManager.onFirstLoad = StartTimer;
+    private void Awake() {
+        carManager.onFirstLoad = StartTimer;
     }
     void StartTimer() {
         startTime = Time.time;
-        CarManager.onFirstLoad = null;
-        isRunning = false;
+        carManager.onFirstLoad = null;
+        isRunning = true;
     }
     public void Update() {
         if (!isRunning) return;
         if (timeLeft < 0) {
-            Cadence.StateMachine.CadenceHierarchyStateMachine.Instance.ActivateState("Title/Main");
+            Cadence.StateMachine.CadenceHierarchyStateMachine.Instance?.ActivateState("Title/Main");
         }
     }
 }
