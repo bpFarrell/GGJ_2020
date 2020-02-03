@@ -15,6 +15,9 @@ public class ItemBase : MonoBehaviour, IInteractable
     public GameObject lastHeld;
     public virtual bool isCurrentlyInteractable => true;
 
+    public AudioSource soundEffect = null;
+    public AudioClip[] audioClips;
+ 
     public Vector3 position { get { return transform.position; } }
     //public GameObject gameObject { get { return base.gameObject; } }
     public GameObject GetGameObject() { return gameObject; }
@@ -164,7 +167,11 @@ public class ItemBase : MonoBehaviour, IInteractable
         {
             return;
         }
-        
+        if (soundEffect != null && audioClips != null) {
+            int index = Random.Range(0, audioClips.Length - 1);
+            soundEffect.clip = audioClips[index];
+            soundEffect.Play();
+        }
         switch (animType)
         {
             case ItemAnimationType.Success:
