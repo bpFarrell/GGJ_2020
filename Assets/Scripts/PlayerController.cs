@@ -3,6 +3,7 @@ using Rewired;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerController : ItemBase
 {
@@ -233,6 +234,7 @@ public class PlayerController : ItemBase
 
     public void ThrowHeld(float timeCharged)
     {
+        heldItem.transform.DOComplete();
         isCharging = false;
         Debug.Log(name + " THROW!!");
         //heldItem.Dropped(this);
