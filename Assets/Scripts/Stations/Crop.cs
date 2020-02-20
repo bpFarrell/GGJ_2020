@@ -141,6 +141,7 @@ public class Crop : Station
             {
                 plantModel.transform.DOShakeRotation(0.5f, 20f, 5, 10, true);
             }
+            TutorialLogic.WaterTransition();
         } 
         else if (canHarvest && item is ItemScyth)
         {
@@ -253,8 +254,6 @@ public class Crop : Station
     }
 
     void CropTransition(CropType from, CropType to) {
-        cropType = to;
-        
         if(plantModel != null) Destroy(plantModel);
         
         GameObject prefab = GetCropPrefab(to);
@@ -267,5 +266,6 @@ public class Crop : Station
         {
             maturedAt = Time.time;
         }
+        TutorialLogic.TillTransition(to);
     } 
 }

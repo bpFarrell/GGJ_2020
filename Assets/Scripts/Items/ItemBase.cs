@@ -10,7 +10,7 @@ public class ItemBase : MonoBehaviour, IInteractable
     private const float ANIMATION_DURATION = 0.5f;
     private float nextAnimationAllowed = 0;
     public bool isHeld { get { return heldBy != null; } }
-    public bool isFlyingStart = false;
+    public bool isFlyingStart = true;
     public PlayerController heldBy;
     public GameObject lastHeld;
     public virtual bool isCurrentlyInteractable => true;
@@ -63,7 +63,7 @@ public class ItemBase : MonoBehaviour, IInteractable
         {
             //MeshRenderer mr = GetComponent<MeshRenderer>();
             //if (rb != null && rb.velocity.y < 0 && col != null && col.bounds.center.y - col.bounds.size.y < 0)
-            if (rb != null && rb.velocity.y < 0 && transform.position.y < defaultY)
+            if (rb != null && rb.velocity.y <= 0 && transform.position.y < defaultY)
             //if (transform.position.y < 0)
             {
                 EndThrow();
