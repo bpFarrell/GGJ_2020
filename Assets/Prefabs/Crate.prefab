@@ -1006,6 +1006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca24274ab68c9249b314e4ed2559c78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outlineThickness: 0.005
   itemDisplay:
   - {fileID: 3129560848517710132}
   - {fileID: 1942840911254554088}

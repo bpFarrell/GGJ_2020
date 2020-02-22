@@ -73,8 +73,10 @@ Shader "Unlit/Grass"
 				float thresh = max(
 				smoothstep(4,6,abs(ogWorld.z)+(cutoff*_Fill)),
 				smoothstep(9,11,abs(ogWorld.x)+(cutoff*_Fill)));
+
 				shadow = smoothstep(0.4,0.65,shadow);
 				final = 1-pow(1-final,1.5);
+
 				//final = lerp(final,fixed4(1,1,1,1)*0.9,thresh);
                 return lerp(final*(shadow*0.1+0.9),paper,thresh*0.6+0.4);
             }

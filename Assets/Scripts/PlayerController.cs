@@ -22,10 +22,19 @@ public class PlayerController : ItemBase
     //public float speed = 2;
     public float chargeTime = 0;
     bool justPickedUp = false;
-    public bool isCharging; 
-
+    public bool isCharging;
+    public Color myColor;
     List<IInteractable> nears;
-    IInteractable nearInteraction;
+
+    IInteractable _nearInteraction;
+    IInteractable nearInteraction {
+        get { return _nearInteraction; }
+        set {
+            if (_nearInteraction != null) _nearInteraction.LeavePrimarySelect(this);
+            _nearInteraction = value;
+            if (_nearInteraction != null) _nearInteraction.EnterPrimarySelect(this);
+        }
+    }
 
     static int claimedPlayers = 0;
 
@@ -178,6 +187,7 @@ public class PlayerController : ItemBase
         if (interact == null) return;
         Debug.Log(name + " near interaction enter: " + other.name);
         nearInteraction = interact;
+        interact.EnterRange(this);
 
         nears.Add(interact);
         UpdateNearest();

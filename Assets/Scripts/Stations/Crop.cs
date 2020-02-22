@@ -43,6 +43,7 @@ public class Crop : Station
 
     private void Start()
     {
+        outlines = new MeshFilter[0]; //fix visual bug for the soil.
         meshFilter.mesh = plainMesh;
 
         if (cropType == CropType.Rocky && rockPrefab)
