@@ -22,10 +22,14 @@ public class ItemBase : MonoBehaviour, IInteractable
     //public GameObject gameObject { get { return base.gameObject; } }
     public GameObject GetGameObject() { return gameObject; }
 
+    public float outlineThickness;
+    protected MeshFilter[] outlines;
+    protected Material outlineMat;
+
+
     Rigidbody rb;
     Collider col;
     float defaultY;
-
     protected void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -34,6 +38,38 @@ public class ItemBase : MonoBehaviour, IInteractable
         defaultY = transform.position.y;
         ShadowLogic sl = (Instantiate(Resources.Load("Shadow") as GameObject)).GetComponent<ShadowLogic>();
         sl.target = transform;
+        BuildMeshList();
+    }
+    private void BuildMeshList()
+    {
+        MeshFilter[] meshes = GetComponentsInChildren<MeshFilter>();
+        outlines = new MeshFilter[meshes.Length];
+        outlineMat = new Material(Resources.Load("Unlit_Outline") as Material);
+        outlineMat.SetFloat("_Thick", outlineThickness);
+        for (int i = 0; i < outlines.Length; i++)
+        {
+            GameObject go = new GameObject("outliner");
+            go.transform.parent = meshes[i].transform.parent;
+            go.transform.localPosition = meshes[i].transform.localPosition;
+            go.transform.localRotation = meshes[i].transform.localRotation;
+            go.transform.localScale = meshes[i].transform.localScale;
+            MeshRenderer mr = go.AddComponent<MeshRenderer>();
+            int matCount = meshes[i].GetComponent<MeshRenderer>().materials.Length;
+            mr.materials = new []{ outlineMat, outlineMat };
+            MeshFilter mf = go.AddComponent<MeshFilter>();
+            mf.mesh = meshes[i].mesh;
+            outlines[i] = mf;
+        }
+
+        SetOutline(false,Color.black);
+    }
+    private void SetOutline(bool set,Color color)
+    {
+        outlineMat.SetColor("_Color", color);
+        for (int i = 0; i < outlines.Length; i++)
+        {
+            outlines[i].gameObject.SetActive(set);
+        }
     }
     void OnEnable()
     {
@@ -120,6 +156,7 @@ public class ItemBase : MonoBehaviour, IInteractable
     public virtual void Interact(PlayerController player) {
         player.AssignToHand(this);
         PickedUp(player);
+        LeavePrimarySelect(player);
     }
 
     public virtual void PickedUp(PlayerController player) {
@@ -194,11 +231,11 @@ public class ItemBase : MonoBehaviour, IInteractable
     }
 
     public void EnterRange(PlayerController player) {
-        Debug.Log("Enter");
+
     }
 
     public void LeaveRange(PlayerController player) {
-        Debug.Log("Leave");
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -218,5 +255,17 @@ public class ItemBase : MonoBehaviour, IInteractable
             }
             collision.collider.isTrigger = true;
         }
+    }
+
+    public void EnterPrimarySelect(PlayerController player)
+    {
+
+        SetOutline(true,player.myColor);
+    }
+
+    public void LeavePrimarySelect(PlayerController player)
+    {
+
+        SetOutline(false, Color.black);
     }
 }

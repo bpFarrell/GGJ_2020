@@ -83,6 +83,7 @@ MonoBehaviour:
   audioClips:
   - {fileID: 8300000, guid: 815899a530dd16f43a554441cac9e204, type: 3}
   - {fileID: 8300000, guid: e94bd50ce3114594b81ac85df47d6d8d, type: 3}
+  outlineThickness: 0.001
 --- !u!82 &4533630612334181457
 AudioSource:
   m_ObjectHideFlags: 0

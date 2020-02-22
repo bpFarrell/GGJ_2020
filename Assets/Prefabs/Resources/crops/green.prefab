@@ -159,6 +159,7 @@ MonoBehaviour:
   lastHeld: {fileID: 0}
   soundEffect: {fileID: 0}
   audioClips: []
+  outlineThickness: 0.03
   plantType: 2
   progressRing: {fileID: 1850746531}
   ringMat: {fileID: 0}
