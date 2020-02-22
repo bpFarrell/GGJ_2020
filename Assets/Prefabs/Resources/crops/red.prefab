@@ -142,6 +142,8 @@ MonoBehaviour:
   isFlyingStart: 0
   heldBy: {fileID: 0}
   lastHeld: {fileID: 0}
+  soundEffect: {fileID: 0}
+  audioClips: []
   plantType: 0
   progressRing: {fileID: 8294284188000876669}
   ringMat: {fileID: 0}
@@ -188,7 +190,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8294284188000876669}
   m_LocalRotation: {x: 0.7071058, y: -0, z: -0, w: 0.7071078}
-  m_LocalPosition: {x: 0, y: 0.06799998, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3697040938721299328}

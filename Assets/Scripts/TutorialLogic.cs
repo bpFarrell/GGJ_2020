@@ -88,7 +88,7 @@ public class TutorialLogic : MonoBehaviour
     }
     public static void WaterTransition()
     {
-        if(instance.state == TutorialState.PlantedSeeds)
+        if(instance.state == TutorialState.SpawnedCan)
         {
             instance.state++;
         }
@@ -98,7 +98,7 @@ public class TutorialLogic : MonoBehaviour
         if(instance.state == TutorialState.SpawnedScyth)
         {
             instance.state++;
-        }else if(instance.state == TutorialState.SpawnedScyth)
+        }else if(instance.state == TutorialState.FirstDelivery)
         {
             instance.hammer.SetActive(true);
             instance.state++;

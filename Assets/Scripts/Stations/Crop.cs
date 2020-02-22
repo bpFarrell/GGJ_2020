@@ -254,6 +254,8 @@ public class Crop : Station
     }
 
     void CropTransition(CropType from, CropType to) {
+        cropType = to;
+
         if(plantModel != null) Destroy(plantModel);
         
         GameObject prefab = GetCropPrefab(to);

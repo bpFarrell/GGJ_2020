@@ -35,7 +35,10 @@ public class ItemBase : MonoBehaviour, IInteractable
         ShadowLogic sl = (Instantiate(Resources.Load("Shadow") as GameObject)).GetComponent<ShadowLogic>();
         sl.target = transform;
     }
-
+    void OnEnable()
+    {
+        transform.DOPunchScale(-transform.localScale, ANIMATION_DURATION);
+    }
     private void FixedUpdate()
     {
         if (rb == null)
