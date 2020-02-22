@@ -54,7 +54,7 @@
 				return deltaDepth + deltaNormal;
 			}
 			float effect_GetEdge(sampler2D gBuffer, float2 uv) {
-				float2 texel = 2 / _ScreenParams.xy;
+				float2 texel = 3 / _ScreenParams.xy;
 				//fixed4 g0 = tex2D(gBuffer, uv + texel*float2(0, 0));
 
 				fixed4 g1 = tex2D(gBuffer, uv + texel*float2( 0,  1));

@@ -34,6 +34,7 @@ namespace Items
         public void Update() {
             float t = (Time.time - spawnTime) / lifeSpan;
             progressRing.transform.eulerAngles = new Vector3(90, 0, 0);
+            progressRing.transform.localPosition = new Vector3(0, 0.1f, 0);
             ringMat.SetFloat("_T", 1 - t - 1);
             if(spawnTime + lifeSpan < Time.time) {
                 if(heldBy!=null)

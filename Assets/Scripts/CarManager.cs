@@ -106,6 +106,7 @@ public class CarManager : MonoBehaviour {
                 carList[nextIndex].MoveToTarget(i);
             }
         }
+        TutorialLogic.DeliverTransition();
     }
 
     private int CountNullCars() {
