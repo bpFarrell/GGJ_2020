@@ -1,15 +1,17 @@
-﻿Shader "Unlit/SpinProgress"
+﻿Shader "Unlit/Outline"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-		_T("t",Float) = 1
+        _Color("Color",Color) = (1,1,1,1)
+        _Thick("Thick",Float) = 1
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" }
+        Tags { "RenderType"="Opaque" }
         LOD 100
 
+            Cull Front
         Pass
         {
             CGPROGRAM
@@ -19,10 +21,12 @@
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
+
             struct appdata
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                float3 normal : NORMAL;
             };
 
             struct v2f
@@ -34,11 +38,12 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-			float _T;
+            float _Thick;
+            float4 _Color;
             v2f vert (appdata v)
             {
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.vertex = UnityObjectToClipPos(v.vertex+v.normal*_Thick);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
@@ -46,20 +51,7 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-				float t = _T*3.14529*3;
-				t+=6;
-				i.uv = i.uv*2-1;
-				float d = length(i.uv);
-				float f = smoothstep(0.13,0.05,abs(d -0.7));
-				f = min(f,atan2(i.uv.x,i.uv.y)+t);
-                // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
-                // apply fog
-                UNITY_APPLY_FOG(i.fogCoord, col);
-				if(f<0.5){
-					discard;
-				}
-                return col*f;
+                return _Color;
             }
             ENDCG
         }

@@ -55,8 +55,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2adcc57c369b0df4fb6554775cc98ba9, type: 3}
   - {fileID: 8300000, guid: 971cd8058e7f8f545be9e5e85da3d246, type: 3}
   - {fileID: 8300000, guid: 04de69e780f11a542a23b86db3705573, type: 3}
+  outlineThickness: 0.001
   maxWaterStacks: 3
-  currentWater: 0
+  currentWater: 1
 --- !u!135 &7383476884930269855
 SphereCollider:
   m_ObjectHideFlags: 0

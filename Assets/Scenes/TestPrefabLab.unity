@@ -246,7 +246,7 @@ PrefabInstance:
     - target: {fileID: 7383476884930269852, guid: db8c525de8721c84b88b5923acdfe612,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7383476884930269852, guid: db8c525de8721c84b88b5923acdfe612,
         type: 3}
@@ -389,6 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41733f37f1b84cfcb20004120b86f7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outlineThickness: 0
   cropType: 1
   plantType: 0
   matureToOvergrownWaitTime: 15
@@ -609,6 +610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41733f37f1b84cfcb20004120b86f7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outlineThickness: 0
   cropType: 1
   plantType: 0
   matureToOvergrownWaitTime: 15
@@ -1237,6 +1239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41733f37f1b84cfcb20004120b86f7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outlineThickness: 0
   cropType: 1
   plantType: 0
   matureToOvergrownWaitTime: 15
@@ -1850,6 +1853,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6626632452688524252, guid: 8222ccd6a04d31e4592a0162892980b7,
+        type: 3}
+      propertyPath: myColor.r
+      value: 0.8113208
+      objectReference: {fileID: 0}
+    - target: {fileID: 6626632452688524252, guid: 8222ccd6a04d31e4592a0162892980b7,
+        type: 3}
+      propertyPath: myColor.g
+      value: 0.7673803
+      objectReference: {fileID: 0}
+    - target: {fileID: 6626632452688524252, guid: 8222ccd6a04d31e4592a0162892980b7,
+        type: 3}
+      propertyPath: myColor.b
+      value: 0.34825563
+      objectReference: {fileID: 0}
+    - target: {fileID: 6626632452688524252, guid: 8222ccd6a04d31e4592a0162892980b7,
+        type: 3}
+      propertyPath: myColor.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6626632453623138492, guid: 8222ccd6a04d31e4592a0162892980b7,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1986,7 +2009,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &401062738
 PrefabInstance:
@@ -2101,6 +2124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41733f37f1b84cfcb20004120b86f7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outlineThickness: 0
   cropType: 1
   plantType: 0
   matureToOvergrownWaitTime: 15
@@ -2170,7 +2194,7 @@ Transform:
   m_Children:
   - {fileID: 2028796453}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: -29.719002, z: 0}
 --- !u!1001 &408161711
 PrefabInstance:
@@ -2847,11 +2871,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Well
       objectReference: {fileID: 0}
-    - target: {fileID: 5795620174171353264, guid: 5140d82d9fd843a4ca7e6bbc28d8e6d1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8696810372781210084, guid: 5140d82d9fd843a4ca7e6bbc28d8e6d1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3356,7 +3375,7 @@ PrefabInstance:
     - target: {fileID: 3724803047228363998, guid: e0466043999ea6941bc6409f5d2b00af,
         type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3724803047228363998, guid: e0466043999ea6941bc6409f5d2b00af,
         type: 3}
@@ -3581,6 +3600,21 @@ PrefabInstance:
     - target: {fileID: 1165170934, guid: 8222ccd6a04d31e4592a0162892980b7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6626632452688524252, guid: 8222ccd6a04d31e4592a0162892980b7,
+        type: 3}
+      propertyPath: myColor.r
+      value: 0.4008989
+      objectReference: {fileID: 0}
+    - target: {fileID: 6626632452688524252, guid: 8222ccd6a04d31e4592a0162892980b7,
+        type: 3}
+      propertyPath: myColor.g
+      value: 0.7264151
+      objectReference: {fileID: 0}
+    - target: {fileID: 6626632452688524252, guid: 8222ccd6a04d31e4592a0162892980b7,
+        type: 3}
+      propertyPath: myColor.b
+      value: 0.4404887
       objectReference: {fileID: 0}
     - target: {fileID: 6626632453623138492, guid: 8222ccd6a04d31e4592a0162892980b7,
         type: 3}
@@ -4719,7 +4753,7 @@ PrefabInstance:
     - target: {fileID: 1784376814221955663, guid: e56d66f1ee8b37149b7c985aaecfe645,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1784376814221955663, guid: e56d66f1ee8b37149b7c985aaecfe645,
         type: 3}
@@ -4974,7 +5008,7 @@ PrefabInstance:
     - target: {fileID: 6898832369599313833, guid: 22607d76bd38e3d4ab965778e3985eae,
         type: 3}
       propertyPath: m_RootOrder
-      value: 17
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6898832369599313833, guid: 22607d76bd38e3d4ab965778e3985eae,
         type: 3}
@@ -6044,6 +6078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41733f37f1b84cfcb20004120b86f7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outlineThickness: 0
   cropType: 1
   plantType: 0
   matureToOvergrownWaitTime: 15
@@ -6432,6 +6467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41733f37f1b84cfcb20004120b86f7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outlineThickness: 0
   cropType: 1
   plantType: 0
   matureToOvergrownWaitTime: 15
@@ -7230,7 +7266,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1831463241
 MonoBehaviour:
@@ -7533,11 +7569,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hammer
       objectReference: {fileID: 0}
-    - target: {fileID: 6818798903502313128, guid: 15b2ca3fde3cc43858805057fa6a166a,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15b2ca3fde3cc43858805057fa6a166a, type: 3}
 --- !u!1 &1899363058
@@ -7593,7 +7624,7 @@ Transform:
   - {fileID: 671638967}
   - {fileID: 1643569951}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1916882529 stripped
 GameObject:
@@ -7720,6 +7751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41733f37f1b84cfcb20004120b86f7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outlineThickness: 0
   cropType: 1
   plantType: 0
   matureToOvergrownWaitTime: 15
@@ -7760,6 +7792,21 @@ PrefabInstance:
     - target: {fileID: 1165170934, guid: 8222ccd6a04d31e4592a0162892980b7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6626632452688524252, guid: 8222ccd6a04d31e4592a0162892980b7,
+        type: 3}
+      propertyPath: myColor.r
+      value: 0.8301887
+      objectReference: {fileID: 0}
+    - target: {fileID: 6626632452688524252, guid: 8222ccd6a04d31e4592a0162892980b7,
+        type: 3}
+      propertyPath: myColor.g
+      value: 0.4738341
+      objectReference: {fileID: 0}
+    - target: {fileID: 6626632452688524252, guid: 8222ccd6a04d31e4592a0162892980b7,
+        type: 3}
+      propertyPath: myColor.b
+      value: 0.4738341
       objectReference: {fileID: 0}
     - target: {fileID: 6626632453623138492, guid: 8222ccd6a04d31e4592a0162892980b7,
         type: 3}
@@ -8097,7 +8144,7 @@ PrefabInstance:
     - target: {fileID: 5113939400503316677, guid: b215ef676aaa8ec4ebc1c30096347c71,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5113939400503316677, guid: b215ef676aaa8ec4ebc1c30096347c71,
         type: 3}
@@ -8500,7 +8547,7 @@ Transform:
   m_Children:
   - {fileID: 103745874}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: -134.71901, z: 0}
 --- !u!1001 &7135852414334117800
 PrefabInstance:
@@ -8562,7 +8609,7 @@ PrefabInstance:
     - target: {fileID: 7135852415178544909, guid: 22acbffe4c56d164a81e08f64aa3677e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7135852415178544909, guid: 22acbffe4c56d164a81e08f64aa3677e,
         type: 3}
