@@ -197,23 +197,66 @@ public class PlayerController : ItemBase
 
     void UpdateNearest()
     {
-        int which = -1;
-        float d = 1000;
-        float dd;
+        int which_station = -1;
+        int which_item = -1;
+        float d_station = 1000;
+        float dd_station;
+        float d_item = 1000;
+        float dd_item;
+        IInteractable nearest = null;
+
         for (int i = 0; i<nears.Count; i++)
         {
             if (nears[i] == null) continue;
-            if (heldItem == nears[i] as ItemBase && !(nears[i] is Station)) continue;
-            dd = (nears[i].position - transform.position).magnitude;
-            if (dd < d)
+            if (heldItem == nears[i] as ItemBase && !(nears[i] is Station)) continue; //skip the item we are holding
+
+            if (nears[i] as Station != null)
             {
-                which = i;
-                d = dd;
-                nearInteraction = nears[i];
+                dd_station = (nears[i].position - transform.position).magnitude;
+                if (dd_station < d_station)
+                {
+                    which_station = i;
+                    d_station = dd_station;
+                }
+            }
+            if (nears[i] as ItemBase != null)
+            {
+                dd_item = (nears[i].position - transform.position).magnitude;
+                if (dd_item < d_item)
+                {
+                    which_item = i;
+                    d_item = dd_item;
+                }
             }
         }
-        if (which == -1) nearInteraction = null;
+        if (heldItem != null) //we are holding a tool, prioritize stations
+        {
+            if (which_station >= 0) nearest = nears[which_station];
+            else if (which_item != -1) nearest = nears[which_item];
+        }
+        else //we are not holding anything, prioritize items
+        {
+            if (which_item != -1) nearest = nears[which_item];
+            else if (which_station >= 0) nearest = nears[which_station];
+        }
+
+        if (nearInteraction != nearest)
+        {
+            if (nearInteraction != null) StopHighlightingNear(nearInteraction);
+            nearInteraction = nearest;
+            if (nearInteraction != null) StartHighlightingNear(nearInteraction);
+        }
         Debug.Log("new near: " + (nearInteraction == null ? "null" :(nearInteraction as MonoBehaviour).name));
+    }
+
+    private void StopHighlightingNear(IInteractable thing)
+    {
+        // ...
+    }
+
+    private void StartHighlightingNear(IInteractable thing)
+    {
+        // ...
     }
 
     public void AssignToHand(ItemBase item)
