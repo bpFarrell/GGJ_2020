@@ -20,6 +20,7 @@ public class CarManager : MonoBehaviour {
     public int numberOfCarsDelivered { get; set; }
     private void Start() {
         Crop.OnFirstCrop += type => { SpawnCar(new[] { type }); };
+        onFirstCar = true;
     }
     private void OnDisable() {
 

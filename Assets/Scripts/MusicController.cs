@@ -8,14 +8,6 @@ public class MusicController : MonoBehaviour
     public AudioSource musicOutput;
 
     public AudioSource MusicOutput { get => musicOutput; set => musicOutput = value; }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if(!MusicOutput.isPlaying)

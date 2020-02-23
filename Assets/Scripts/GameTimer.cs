@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameTimer : MonoBehaviour {
     public CarManager carManager;
+    public EndScreenManager endManager;
     public float secondsLong = 180;
     private float startTime;
     public bool isRunning;
@@ -23,7 +24,9 @@ public class GameTimer : MonoBehaviour {
     public void Update() {
         if (!isRunning) return;
         if (timeLeft < 0) {
-            Cadence.StateMachine.CadenceHierarchyStateMachine.Instance?.ActivateState("Title/Main");
+            //Cadence.StateMachine.CadenceHierarchyStateMachine.Instance?.ActivateState("Level1/End");
+            endManager.Activate();
+            isRunning = false;
         }
     }
 }

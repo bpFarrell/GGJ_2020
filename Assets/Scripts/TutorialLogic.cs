@@ -98,8 +98,7 @@ public class TutorialLogic : MonoBehaviour
         if(instance.state == TutorialState.SpawnedScyth)
         {
             instance.state++;
-        }else if(instance.state == TutorialState.FirstDelivery)
-        {
+        }else if(instance.state == TutorialState.FirstDelivery) {
             instance.hammer.SetActive(true);
             instance.state++;
         }
